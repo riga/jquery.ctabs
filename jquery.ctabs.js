@@ -11,24 +11,8 @@
 
 (function($) {
 
-    $.widget('custom.ctabs', {
-        version: '0.1',
-        defaultElement: '<div>',
-        //delay: 300,
-        options: {
-            header: 'h3'
-        },
-        _create: function() {
-            console.log('_create', this, arguments);
-            return this;
-        },
-        _init: function() {
-            console.log('_init', this, arguments);
-            return this;
-        },
-        _destroy: function() {},
-        _open: function() {},
-        _close: function() {}
+    $.widget('custom.ctabs', $.ui.tabs, {
+        
     });
 
 })(jQuery);
