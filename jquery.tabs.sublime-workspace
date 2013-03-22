@@ -519,6 +519,14 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "jquery.tabs.js",
+			"settings":
+			{
+				"buffer_size": 266,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -931,8 +939,35 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "jquery.tabs.js",
+					"settings":
+					{
+						"buffer_size": 266,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								266,
+								266
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -993,6 +1028,10 @@
 		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"logger",
+				"/Users/marcel/Documents/Projekte/github/jquery.logger/jquery.logger.sublime-project"
+			],
 			[
 				"vis",
 				"/Users/marcel/Documents/Hiwi/3PIA/Vispa/Web/vispa.sublime-project"
