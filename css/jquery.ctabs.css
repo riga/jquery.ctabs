@@ -8,6 +8,8 @@
     right: 0px;
     left: 0px;
     height: 28px;
+
+    background-color: lightgrey;
 }
 
 .ctabs-body {
@@ -36,6 +38,7 @@
     position: absolute;
     top: 0px;
     bottom: 0px;
+    margin-top: 6px;
 }
 
 .ctabs-head-center-flex {
@@ -44,9 +47,71 @@
     display: -moz-box;
 }
 
+.ctabs-adder {
+    position: relative;
+    display: block;
+    margin-left: 20px;
+}
+
 .ctabs-ctab {
     position: relative;
+    display: block;
     height: 22px;
+    padding: 0px 20px;
+    margin-right: -20px;
+}
+
+.ctabs-ctab-center {
+    position: relative;
+    display: block;
+    height: 100%;
+}
+
+.ctabs-ctab-left {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    width: 20px;
+
+    background-color: yellow;
+}
+
+.ctabs-ctab-right {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: 20px;
+
+    background-color: yellow;
+}
+
+.ctabs-ctab-label {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    bottom: 0px;
+    left: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ctabs-ctab-icon {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    width: 16px;
+}
+
+.ctabs-ctab-close {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 20px;
 }
 
 .ctabs-ctab-flex {
@@ -61,15 +126,35 @@
     box-shadow: inset 0px 0px 1px black;
 }
 
-.ctabs-table-outer {
-    display: table;
-}
-
 .ctabs-panel {
     display: none;
+}
+
+.ctabs-table-outer {
+    display: table;
+    height: 100%;
+    width: 100%;
 }
 
 .ctabs-table-inner {
     display: table-cell;
     vertical-align: middle;
+}
+
+.ctabs-table-inner-center {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.ctabs-table-inner-left {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.ctabs-table-inner-right {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
 }
