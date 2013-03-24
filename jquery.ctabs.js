@@ -138,10 +138,7 @@
             this.store[hash].panel
                 .addClass("ctabs-panel")
                 .appendTo(this.nodes.body);
-            this.store[hash].anchor.click(function(event) {
-                event.preventDefault();
-                that.select(hash);
-            });
+
             this.store[hash].ctab = ctab = $("<div>")
                 .addClass("ctabs-ctab");
             this.nodes.adder.before(ctab);
@@ -172,16 +169,27 @@
             this.store[hash].close = close = $("<div>")
                 .addClass("ctabs-table-inner-right")
                 .append("x")
-                .appendTo(innerClose);
+                .appendTo(innerClose)
+                .click(function() {
+                    that.remove(hash);
+                });
+            var anchorText = this.store[hash].anchor.html();
+            this.store[hash].anchor
+                .empty()
+                .appendTo(center)
+                .click(function(event) {
+                    event.preventDefault();
+                    that.select(hash);
+                });
             var outerLabel = $("<div>")
                 .addClass("ctabs-ctab-label")
-                .appendTo(center);
+                .appendTo(this.store[hash].anchor);
             var innerLabel = $("<div>")
                 .addClass("ctabs-table-outer")
                 .appendTo(outerLabel);
             this.store[hash].label = label = $("<div>")
                 .addClass("ctabs-table-inner")
-                .append(this.store[hash].anchor)
+                .append(anchorText)
                 .appendTo(innerLabel);
 
             this.ctabs = this.ctabs.add(ctab);
