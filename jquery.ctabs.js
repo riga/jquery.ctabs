@@ -22,7 +22,7 @@
             headRightWidth: 0,
             height: "100%",
             icon: "span",
-            useFlex: true,
+            useFlex: false,
             width: "100%"
         },
 
@@ -39,6 +39,18 @@
 
         _init: function() {
             this._initTarget();
+        },
+
+        _setOption: function(key, value) {
+            this._super(key, value);
+
+            switch (key) {
+                case "useFlex":
+                    this._applyMode();
+                    break;
+                default:
+                    break;
+            }
         },
 
         _prepare: function() {
@@ -150,8 +162,8 @@
                 .appendTo(this.nodes.body);
 
             this.store[hash].ctab = ctab = $("<div>")
-                .addClass("ctabs-ctab");
-            this.nodes.adder.before(ctab);
+                .addClass("ctabs-ctab")
+                .insertBefore(this.nodes.adder);
             $("<div>")
                 .addClass("ctabs-ctab-left")
                 .appendTo(ctab);
@@ -207,10 +219,10 @@
         },
 
         _applyMode: function() {
-            if (this.options.useFlex) {
-                this.nodes.headCenter.toggleClass("ctabs-head-center-flex", true);
-                this.ctabs.toggleClass("ctabs-ctab-flex", true);
-            }
+            this.nodes.headCenter.toggleClass("ctabs-head-center-flex", this.options.useFlex);
+            this.ctabs.toggleClass("ctabs-ctab-flex", this.options.useFlex);
+            this.nodes.headCenter.toggleClass("ctabs-head-center-fix", !this.options.useFlex);
+            this.ctabs.toggleClass("ctabs-ctab-fix", !this.options.useFlex);
         },
 
         add: function(hash, data) {
@@ -315,6 +327,13 @@
             } else if (!modified && title[0] == "*") {
                 this.title(hash, title.substr(1));
             }
+        },
+
+        resize: function() {
+            if (this.options.useFlex) {
+                return;
+            }
+            console.log("TODO: resize");
         }
     });
 

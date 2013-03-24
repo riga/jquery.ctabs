@@ -46,17 +46,20 @@
     position: relative;
     height: 100%;
     width: 100%;
+    overflow: hidden;
 }
-
 .ctabs-head-center-flex {
     display: -webkit-box;
     display: -moz-box;
     display: box;
 }
+.ctabs-head-center-fix {
+    white-space: nowrap;
+}
 
 .ctabs-adder {
     position: relative;
-    display: block;
+    display: inline-block;
     margin-left: 20px;
 }
 .ctabs-adder:first-child {
@@ -68,9 +71,10 @@
     display: block;
     height: 22px;
     margin-right: -20px;
+    box-shadow: inset 0px 0px 1px black;
 }
 .ctabs-ctab-active {
-    z-index: 1;
+    z-index: 1001;
     background-color: blue;
 }
 .ctabs-ctab-flex {
@@ -79,8 +83,11 @@
     box-flex: 1;
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
-
-    box-shadow: inset 0px 0px 1px black;
+}
+.ctabs-ctab-fix {
+    position: relative;
+    display: inline-block;
+    width: 180px;
 }
 
 .ctabs-ctab-center {
