@@ -67,7 +67,6 @@
     position: relative;
     display: block;
     height: 22px;
-    padding: 0px 20px;
     margin-right: -20px;
 }
 .ctabs-ctab-active {
@@ -76,8 +75,7 @@
 }
 .ctabs-ctab-flex {
     min-width: 20px;
-    max-width: 160px;
-    width: 160px;
+    max-width: 180px;
     box-flex: 1;
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
@@ -87,8 +85,9 @@
 
 .ctabs-ctab-center {
     position: relative;
-    display: flex;
+    display: block;
     height: 22px;
+    margin: 0px 20px;
 }
 
 .ctabs-ctab-left {
