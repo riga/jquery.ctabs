@@ -8,7 +8,6 @@
     right: 0px;
     left: 0px;
     height: 28px;
-    box-shadow: inset 0px 2px 1px red;
 }
 
 .ctabs-body {
@@ -17,7 +16,6 @@
     right: 0px;
     bottom: 0px;
     left: 0px;
-    box-shadow: inset 0px 2px 0px green;
 }
 
 .ctabs-head-left {
@@ -38,6 +36,29 @@
     position: absolute;
     top: 0px;
     bottom: 0px;
+}
+
+.ctabs-head-center-flex {
+    display: box;
+    display: -webkit-box;
+    display: -moz-box;
+}
+
+.ctabs-ctab {
+    position: relative;
+    height: 22px;
+}
+
+.ctabs-ctab-flex {
+    width: 0px;
+    min-width: 20px;
+    max-width: 160px;
+    display: block;
+    box-flex: 1;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+
+    box-shadow: inset 0px 0px 1px black;
 }
 
 .ctabs-table-outer {

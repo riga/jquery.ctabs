@@ -14,16 +14,22 @@
     $.widget("custom.ctabs", {
         version: "0.1",
         options: {
-            height: "100%",
-            width: "100%",
+            active: 0,
             headLeft: "",
             headLeftWidth: 0,
             headRight: "",
             headRightWidth: 0,
+            height: "100%",
+            useFlex: true,
+            width: "100%",
+        },
+
+        workflow: {
+            currentHash: null
         },
 
         _create: function() {
-            this._collectSource();
+            this._prepare();
             this._hideSource();
             this._createTarget();
             this._fillTarget();
@@ -33,7 +39,7 @@
             this._initTarget();
         },
 
-        _collectSource: function() {
+        _prepare: function() {
             var that = this;
             this.tabList = this.element.find("ol, ul").eq(0);
             this.tabs = this.tabList.children();
@@ -50,10 +56,10 @@
                     hash: hash,
                     tab: that.tabs.eq(i),
                     anchor: anchor,
-                    panel: panel,
-                    ctab: null
+                    panel: panel
                 };
             });
+            this.ctabs = $();
         },
 
         _hideSource: function() {
@@ -102,6 +108,7 @@
                 left: this.options.headLeftWidth,
                 right: this.options.headRightWidth
             });
+            this._applyMode();
         },
 
         _fillTarget: function() {
@@ -109,19 +116,35 @@
             $.each(this.store, function(hash) {
                 that._createCTab(hash, undefined);
             });
+            this.select(this.anchors[this.options.active].get(0).hash);
         },
 
         _createCTab: function(hash, data) {
+            var that = this;
             if (!this.store[hash]) {
                 this.add(hash, data);
             }
             if (!this.store[hash]) {
-                return this;
+                return;
             }
             this.store[hash].tab.hide();
             this.store[hash].panel.hide().appendTo(this.nodes.body);
+            this.store[hash].anchor.click(function(event) {
+                event.preventDefault();
+                that.select(hash);
+            });
+            var ctab = $("<div>")
+                .addClass("ctabs-ctab")
+                .appendTo(this.nodes.headCenter)
+                .append(this.store[hash].anchor);
+            this.ctabs = this.ctabs.add(ctab);
+        },
 
-            this.nodes.headCenter.append($("<span>").html(this.store[hash].anchor.html()));
+        _applyMode: function() {
+            if (this.options.useFlex) {
+                this.nodes.headCenter.toggleClass("ctabs-head-center-flex", true);
+                this.ctabs.toggleClass("ctabs-ctab-flex", true);
+            }
         },
 
         add: function(hash, data) {
@@ -140,13 +163,29 @@
                 hash: hash,
                 tab: tab,
                 anchor: anchor,
-                panel: panel,
-                ctab: null
+                panel: panel
             };
         },
 
         remove: function(hash) {
             // TODO
+        },
+
+        select: function(hash) {
+            if (!this.store[hash]) {
+                return;
+            }
+            this.deselect();
+            this.workflow.currentHash = hash;
+            this.store[hash].panel.show();
+        },
+
+        deselect: function() {
+            if (!this.workflow.currentHash) {
+                return;
+            }
+            this.store[this.workflow.currentHash].panel.hide();
+            this.workflow.currentHash = null;
         }
     });
 
