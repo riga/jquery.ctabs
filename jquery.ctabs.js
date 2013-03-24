@@ -157,7 +157,7 @@
             var innerIcon = $("<div>")
                 .addClass("ctabs-table-outer")
                 .appendTo(outerIcon);
-            this.store[hash].icon = icon = $("<div>")
+            this.store[hash].icon = $("<div>")
                 .addClass("ctabs-table-inner-left")
                 .appendTo(innerIcon);
             var outerClose = $("<div>")
@@ -181,16 +181,16 @@
                     event.preventDefault();
                     that.select(hash);
                 });
-            var outerLabel = $("<div>")
-                .addClass("ctabs-ctab-label")
+            var outerTitle = $("<div>")
+                .addClass("ctabs-ctab-title")
                 .appendTo(this.store[hash].anchor);
-            var innerLabel = $("<div>")
+            var innerTitle = $("<div>")
                 .addClass("ctabs-table-outer")
-                .appendTo(outerLabel);
-            this.store[hash].label = label = $("<div>")
+                .appendTo(outerTitle);
+            this.store[hash].title = $("<div>")
                 .addClass("ctabs-table-inner")
-                .append(anchorText)
-                .appendTo(innerLabel);
+                .html(anchorText)
+                .appendTo(innerTitle);
 
             this.ctabs = this.ctabs.add(ctab);
         },
@@ -212,7 +212,7 @@
             } else {
                 hash = "#" + hash;
             }
-            $.extend({title: "", content: ""}, data);
+            data = $.extend({title: "", content: ""}, data);
             var tab = $("<li>").appendTo(this.tabList);
             var anchor = $("<a>")
                 .attr("href", hash)
@@ -234,6 +234,7 @@
             };
             this._createCTab(hash);
             this._refresh();
+            return this.store[hash];
         },
 
         remove: function(hash) {
@@ -263,6 +264,27 @@
             }
             this.store[this.workflow.currentHash].panel.hide();
             this.workflow.currentHash = null;
+        },
+
+        title: function(hash, title) {
+            if (!this.store[hash]) {
+                return;
+            }
+            if (!title) {
+                return this.store[hash].title.html();
+            }
+            this.store[hash].title.html(title);
+        },
+
+        mark: function(hash, modified) {
+            modified = modified === undefined ? true : modified;
+            var title = this.title(hash);
+            console.log(title);
+            if (modified && title[0] != "*") {
+                this.title(hash, "*" + title);
+            } else if (!modified && title[0] == "*") {
+                this.title(hash, title.substr(1));
+            }
         }
     });
 

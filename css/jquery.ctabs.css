@@ -54,6 +54,9 @@
     display: block;
     margin-left: 20px;
 }
+.ctabs-adder:first-child {
+    margin-left: 0px;
+}
 
 .ctabs-ctab {
     position: relative;
@@ -89,7 +92,7 @@
     background-color: yellow;
 }
 
-.ctabs-ctab-label {
+.ctabs-ctab-title {
     position: absolute;
     top: 0px;
     right: 20px;
