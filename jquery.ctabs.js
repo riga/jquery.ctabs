@@ -16,13 +16,15 @@
         options: {
             active: 0,
             add: function(){},
+            headerHeight: 30,
             headLeft: "",
             headLeftWidth: 0,
             headRight: "",
             headRightWidth: 0,
             height: "100%",
             icon: "span",
-            useFlex: false,
+            tabHeight: 25,
+            useFlex: true,
             width: "100%"
         },
 
@@ -45,8 +47,43 @@
             this._super(key, value);
 
             switch (key) {
+                case "active":
+                    if (!this._applyActive(value)) {
+                        return;
+                    }
+                    break;
+                case "add":
+                    // dynamic
+                    break;
+                case "headerHeight":
+                    // TODO
+                    break;
+                case "headLeft":
+                    // TODO
+                    break;
+                case "headLeftWidth":
+                    // TODO
+                    break;
+                case "headRight":
+                    // TODO
+                    break;
+                case "headRightWidth":
+                    // TODO
+                    break;
+                case "height":
+                    // TODO
+                    break;
+                case "icon":
+                    // singular option
+                    break;
+                case "tabHeight":
+                    // TODO
+                    break;
                 case "useFlex":
                     this._applyMode();
+                    break;
+                case "width":
+                    // TODO
                     break;
                 default:
                     break;
@@ -120,19 +157,23 @@
             this.nodes.headCenter = $("<div>")
                 .addClass("ctabs-head-center")
                 .appendTo(this.nodes.outerHeadCenter);
-
             this.nodes.adder = $("<div>")
                 .addClass("ctabs-adder")
                 .html("+")
                 .appendTo(this.nodes.headCenter)
-                .click(this.options.add);
+                .click(function() {
+                    that.options.add();
+                });
 
             $(this.nodes.headCenter).sortable({
                 axis: "x",
                 cursor: "default",
                 tolerance: "pointer",
                 distance: 20,
-                items: ".ctabs-ctab"
+                items: ".ctabs-ctab",
+                stop: function(event, ui) {
+                    that._setActiveOption();
+                }
             });
         },
 
@@ -163,13 +204,20 @@
 
             this.store[hash].ctab = ctab = $("<div>")
                 .addClass("ctabs-ctab")
+                .attr("hash", hash)
                 .insertBefore(this.nodes.adder);
-            $("<div>")
+            var tabLeft = $("<div>")
                 .addClass("ctabs-ctab-left")
                 .appendTo(ctab);
             $("<div>")
+                .addClass("ctabs-ctab-left-inner")
+                .appendTo(tabLeft);
+            var tabRight = $("<div>")
                 .addClass("ctabs-ctab-right")
                 .appendTo(ctab);
+            $("<div>")
+                .addClass("ctabs-ctab-right-inner")
+                .appendTo(tabRight);
             var center = $("<div>")
                 .addClass("ctabs-ctab-center")
                 .appendTo(ctab);
@@ -225,6 +273,29 @@
             this.ctabs.toggleClass("ctabs-ctab-fix", !this.options.useFlex);
         },
 
+        _applyActive: function(value) {
+            var ctab = this.nodes.headCenter.children(".ctabs-ctab").eq(value);
+            if (ctab) {
+                this.select(ctab.attr("hash"));
+                return true;
+            }
+            return false;
+        },
+
+        _setActiveOption: function() {
+            var that = this;
+            var hash = this.workflow.currentHash;
+            if (!hash) {
+                this.options.active = null;
+            }
+            this.nodes.headCenter.children(".ctabs-ctab").each(function(i, ctab) {
+                if ($(ctab).attr("hash") == hash) {
+                    that.options.active = i;
+                    return false;
+                }
+            });
+        },
+
         add: function(hash, data) {
             if (this.store[hash]) {
                 return;
@@ -273,13 +344,15 @@
         },
 
         select: function(hash) {
+            var that = this;
             if (!this.store[hash]) {
                 return;
             }
             this.deselect();
-            this.workflow.currentHash = hash;
             this.store[hash].ctab.toggleClass("ctabs-ctab-active", true);
             this.store[hash].panel.show();
+            this.workflow.currentHash = hash;
+            this._setActiveOption();
         },
 
         deselect: function() {
@@ -289,6 +362,7 @@
             this.store[this.workflow.currentHash].panel.hide();
             this.store[this.workflow.currentHash].ctab.toggleClass("ctabs-ctab-active", false);
             this.workflow.currentHash = null;
+            this.options.active = null;
         },
 
         title: function(hash, title) {
