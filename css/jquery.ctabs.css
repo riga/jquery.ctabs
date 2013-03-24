@@ -36,17 +36,22 @@
     right: 0px;
 }
 
-.ctabs-head-center {
+.ctabs-head-center-outer {
     position: absolute;
-    top: 0px;
+    top: 6px;
     bottom: 0px;
-    margin-top: 6px;
+}
+
+.ctabs-head-center {
+    position: relative;
+    height: 100%;
+    width: 100%;
 }
 
 .ctabs-head-center-flex {
-    display: box;
     display: -webkit-box;
     display: -moz-box;
+    display: box;
 }
 
 .ctabs-adder {
@@ -65,11 +70,25 @@
     padding: 0px 20px;
     margin-right: -20px;
 }
+.ctabs-ctab-active {
+    z-index: 1;
+    background-color: blue;
+}
+.ctabs-ctab-flex {
+    min-width: 20px;
+    max-width: 160px;
+    width: 160px;
+    box-flex: 1;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+
+    box-shadow: inset 0px 0px 1px black;
+}
 
 .ctabs-ctab-center {
     position: relative;
-    display: block;
-    height: 100%;
+    display: flex;
+    height: 22px;
 }
 
 .ctabs-ctab-left {
@@ -79,7 +98,7 @@
     left: 0px;
     width: 20px;
 
-    background-color: yellow;
+    background-color: red;
 }
 
 .ctabs-ctab-right {
@@ -89,7 +108,7 @@
     right: 0px;
     width: 20px;
 
-    background-color: yellow;
+    background-color: green;
 }
 
 .ctabs-ctab-title {
@@ -117,18 +136,6 @@
     right: 0px;
     bottom: 0px;
     width: 20px;
-}
-
-.ctabs-ctab-flex {
-    width: 0px;
-    min-width: 20px;
-    max-width: 160px;
-    display: block;
-    box-flex: 1;
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-
-    box-shadow: inset 0px 0px 1px black;
 }
 
 .ctabs-panel {

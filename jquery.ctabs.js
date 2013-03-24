@@ -15,6 +15,7 @@
         version: "0.1",
         options: {
             active: 0,
+            add: function(){},
             headLeft: "",
             headLeftWidth: 0,
             headRight: "",
@@ -22,7 +23,7 @@
             height: "100%",
             icon: "span",
             useFlex: true,
-            width: "100%",
+            width: "100%"
         },
 
         workflow: {
@@ -101,14 +102,18 @@
                 .addClass("ctabs-table-inner")
                 .append(this.options.headRight)
                 .appendTo(this.nodes.headRight);
+            this.nodes.outerHeadCenter = $("<div>")
+                .addClass("ctabs-head-center-outer")
+                .appendTo(this.nodes.head);
             this.nodes.headCenter = $("<div>")
                 .addClass("ctabs-head-center")
-                .appendTo(this.nodes.head);
+                .appendTo(this.nodes.outerHeadCenter);
 
             this.nodes.adder = $("<div>")
                 .addClass("ctabs-adder")
                 .html("+")
-                .appendTo(this.nodes.headCenter);
+                .appendTo(this.nodes.headCenter)
+                .click(this.options.add);
 
             $(this.nodes.headCenter).sortable({
                 axis: "x",
@@ -122,7 +127,7 @@
         _initTarget: function() {
             this.nodes.headLeft.css("width", this.options.headLeftWidth);
             this.nodes.headRight.css("width", this.options.headRightWidth);
-            this.nodes.headCenter.css({
+            this.nodes.outerHeadCenter.css({
                 left: this.options.headLeftWidth,
                 right: this.options.headRightWidth
             });
@@ -261,6 +266,7 @@
             }
             this.deselect();
             this.workflow.currentHash = hash;
+            this.store[hash].ctab.toggleClass("ctabs-ctab-active", true);
             this.store[hash].panel.show();
         },
 
@@ -269,6 +275,7 @@
                 return;
             }
             this.store[this.workflow.currentHash].panel.hide();
+            this.store[this.workflow.currentHash].ctab.toggleClass("ctabs-ctab-active", false);
             this.workflow.currentHash = null;
         },
 
