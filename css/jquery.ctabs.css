@@ -1,0 +1,50 @@
+.ctabs-element {
+
+}
+
+.ctabs-head {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    height: 28px;
+    box-shadow: inset 0px 2px 1px red;
+}
+
+.ctabs-body {
+    position: absolute;
+    top: 28px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    box-shadow: inset 0px 2px 0px green;
+}
+
+.ctabs-head-left {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+.ctabs-head-right {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+}
+
+.ctabs-head-center {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+}
+
+.ctabs-table-outer {
+    display: table;
+}
+
+.ctabs-table-inner {
+    display: table-cell;
+    vertical-align: middle;
+}
