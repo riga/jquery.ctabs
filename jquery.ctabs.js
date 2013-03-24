@@ -108,7 +108,7 @@
                 left: this.options.headLeftWidth,
                 right: this.options.headRightWidth
             });
-            this._applyMode();
+            this._refresh();
         },
 
         _fillTarget: function() {
@@ -119,28 +119,24 @@
             this.select(this.anchors[this.options.active].get(0).hash);
         },
 
-        _createCTab: function(hash, data) {
+        _createCTab: function(hash) {
             var that = this;
-            if (!this.store[hash]) {
-                this.add(hash, data);
-            }
-            if (!this.store[hash]) {
-                return;
-            }
             this.store[hash].tab.hide();
-            this.store[hash].panel.hide().appendTo(this.nodes.body);
+            this.store[hash].panel
+                .addClass("ctabs-panel")
+                .appendTo(this.nodes.body);
             this.store[hash].anchor.click(function(event) {
                 event.preventDefault();
                 that.select(hash);
             });
-            var ctab = $("<div>")
+            this.store[hash].ctab = ctab = $("<div>")
                 .addClass("ctabs-ctab")
                 .appendTo(this.nodes.headCenter)
                 .append(this.store[hash].anchor);
             this.ctabs = this.ctabs.add(ctab);
         },
 
-        _applyMode: function() {
+        _refresh: function() {
             if (this.options.useFlex) {
                 this.nodes.headCenter.toggleClass("ctabs-head-center-flex", true);
                 this.ctabs.toggleClass("ctabs-ctab-flex", true);
@@ -148,16 +144,28 @@
         },
 
         add: function(hash, data) {
+            if (this.store[hash]) {
+                return;
+            }
+            var id = hash;
+            if (hash[0] == "#") {
+                id = hash.substr(1);
+            } else {
+                hash = "#" + hash;
+            }
             $.extend({title: "", content: ""}, data);
             var tab = $("<li>").appendTo(this.tabList);
             var anchor = $("<a>")
                 .attr("href", hash)
                 .append(data.title)
                 .appendTo(tab);
-            var panel = data.content;
+            var panel;
             if (typeof(data.content) == "string") {
                 panel = $("<div>").append(data.content);
+            } else {
+                 panel = $(data.content);
             }
+            panel.attr("id", hash);
             this.element.append(panel);
             this.store[hash] = {
                 hash: hash,
@@ -165,10 +173,20 @@
                 anchor: anchor,
                 panel: panel
             };
+            this._createCTab(hash);
+            this._refresh();
         },
 
         remove: function(hash) {
-            // TODO
+            if (!this.store[hash]) {
+                return;
+            }
+            if (this.workflow.currentHash == hash) {
+                this.deselect();
+            }
+            this.store[hash].ctab.remove();
+            this.store[hash].panel.remove();
+            delete this.store[hash];
         },
 
         select: function(hash) {

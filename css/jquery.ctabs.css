@@ -65,6 +65,10 @@
     display: table;
 }
 
+.ctabs-panel {
+    display: none;
+}
+
 .ctabs-table-inner {
     display: table-cell;
     vertical-align: middle;
