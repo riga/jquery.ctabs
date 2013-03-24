@@ -20,6 +20,7 @@
             headRight: "",
             headRightWidth: 0,
             height: "100%",
+            icon: "span",
             useFlex: true,
             width: "100%",
         },
@@ -41,22 +42,26 @@
 
         _prepare: function() {
             var that = this;
-            this.tabList = this.element.find("ol, ul").eq(0);
+            this.tabList = this.element.find("ol, ul").first();
             this.tabs = this.tabList.children();
             this.anchors = this.tabs.map(function() {
                 return $("a", this);
+            });
+            this.icons = this.tabs.map(function() {
+                return $(that.options.icon, this).first();
             });
             this.panels = $();
             this.store = {};
             $.each(this.anchors, function(i, anchor) {
                 var hash = anchor.get(0).hash;
-                var panel = that.element.children(hash).eq(0);
+                var panel = that.element.children(hash).first();
                 that.panels = that.panels.add(panel);
                 that.store[hash] = {
                     hash: hash,
                     tab: that.tabs.eq(i),
                     anchor: anchor,
-                    panel: panel
+                    panel: panel,
+                    icon: that.icons[i]
                 };
             });
             this.ctabs = $();
@@ -121,7 +126,7 @@
                 left: this.options.headLeftWidth,
                 right: this.options.headRightWidth
             });
-            this._refresh();
+            this._applyMode();
         },
 
         _fillTarget: function() {
@@ -157,8 +162,9 @@
             var innerIcon = $("<div>")
                 .addClass("ctabs-table-outer")
                 .appendTo(outerIcon);
-            this.store[hash].icon = $("<div>")
+            this.store[hash].iconBox = icon = $("<div>")
                 .addClass("ctabs-table-inner-left")
+                .append(this.store[hash].icon)
                 .appendTo(innerIcon);
             var outerClose = $("<div>")
                 .addClass("ctabs-ctab-close")
@@ -195,7 +201,7 @@
             this.ctabs = this.ctabs.add(ctab);
         },
 
-        _refresh: function() {
+        _applyMode: function() {
             if (this.options.useFlex) {
                 this.nodes.headCenter.toggleClass("ctabs-head-center-flex", true);
                 this.ctabs.toggleClass("ctabs-ctab-flex", true);
@@ -233,7 +239,7 @@
                 panel: panel
             };
             this._createCTab(hash);
-            this._refresh();
+            this._applyMode();
             return this.store[hash];
         },
 
@@ -274,6 +280,23 @@
                 return this.store[hash].title.html();
             }
             this.store[hash].title.html(title);
+        },
+
+        icon: function(hash, icon) {
+
+            if (!this.store[hash]) {
+                return;
+            }
+            if (!icon) {
+                return this.store[hash].icon;
+            }
+            var oldIcon = this.store[hash].icon;
+            oldIcon.remove();
+            this.icons = $.map(this.icons, function() {
+                return this == oldIcon ? icon : this;
+            });
+            this.store[hash].icon = icon;
+            this.store[hash].iconBox.append(icon);
         },
 
         mark: function(hash, modified) {
