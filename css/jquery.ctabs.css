@@ -13,7 +13,7 @@
     top: 0px;
     right: 0px;
     left: 0px;
-    height: 28px;
+    height: 30px;
     overflow: hidden;
 
     background-color: lightgrey;
@@ -21,7 +21,7 @@
 
 .ctabs-body {
     position: absolute;
-    top: 28px;
+    top: 30px;
     right: 0px;
     bottom: 0px;
     left: 0px;
@@ -44,7 +44,7 @@
 
 .ctabs-head-center-wrapper {
     position: absolute;
-    top: 6px;
+    top: 5px;
     bottom: 0px;
 }
 
@@ -75,7 +75,7 @@
 .ctabs-ctab {
     position: relative;
     display: block;
-    height: 22px;
+    height: 100%;
     margin-right: -20px;
     box-shadow: inset 0px 0px 1px black;
 }
@@ -103,7 +103,7 @@
 .ctabs-ctab-center {
     position: relative;
     display: block;
-    height: 22px;
+    height: 100%;
     margin: 0px 20px;
 }
 

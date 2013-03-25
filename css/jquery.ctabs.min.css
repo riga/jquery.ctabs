@@ -6,12 +6,12 @@
  * Dual licensed under the MIT or GPL Version 3 licenses.
  * http://www.opensource.org/licenses/mit-license
  * http://www.opensource.org/licenses/GPL-3.0
- */.ctabs-head{position:absolute;top:0;right:0;left:0;height:28px;overflow:hidden;background-color:lightgrey}.ctabs-body{position:absolute;top:28px;right:0;bottom:0;left:0;overflow:hidden}
-.ctabs-head-left-wrapper{position:absolute;top:0;bottom:0;left:0}.ctabs-head-right-wrapper{position:absolute;top:0;bottom:0;right:0}.ctabs-head-center-wrapper{position:absolute;top:6px;bottom:0}
+ */.ctabs-head{position:absolute;top:0;right:0;left:0;height:30px;overflow:hidden;background-color:lightgrey}.ctabs-body{position:absolute;top:30px;right:0;bottom:0;left:0;overflow:hidden}
+.ctabs-head-left-wrapper{position:absolute;top:0;bottom:0;left:0}.ctabs-head-right-wrapper{position:absolute;top:0;bottom:0;right:0}.ctabs-head-center-wrapper{position:absolute;top:5px;bottom:0}
 .ctabs-head-center{position:relative;height:100%;width:100%;overflow:hidden}.ctabs-head-center-flex{display:-webkit-box;display:-moz-box;display:box}.ctabs-head-center-fix{white-space:nowrap}
-.ctabs-adder{position:relative;display:inline-block;margin-left:20px}.ctabs-adder:first-child{margin-left:0}.ctabs-ctab{position:relative;display:block;height:22px;margin-right:-20px;box-shadow:inset 0 0 1px black}
+.ctabs-adder{position:relative;display:inline-block;margin-left:20px}.ctabs-adder:first-child{margin-left:0}.ctabs-ctab{position:relative;display:block;height:100%;margin-right:-20px;box-shadow:inset 0 0 1px black}
 .ctabs-ctab-dimensions{min-width:80px;max-width:180px}.ctabs-ctab-active{z-index:1001;background-color:blue}.ctabs-ctab-flex{box-flex:1;-webkit-box-flex:1;-moz-box-flex:1}
-.ctabs-ctab-fix{display:inline-block}.ctabs-ctab-fix-placeholder{position:relative;display:inline-block}.ctabs-ctab-center{position:relative;display:block;height:22px;margin:0 20px}
+.ctabs-ctab-fix{display:inline-block}.ctabs-ctab-fix-placeholder{position:relative;display:inline-block}.ctabs-ctab-center{position:relative;display:block;height:100%;margin:0 20px}
 .ctabs-ctab-left-wrapper{position:absolute;top:0;bottom:0;left:0;width:20px;background-color:red}.ctabs-ctab-right-wrapper{position:absolute;top:0;bottom:0;right:0;width:20px;background-color:green}
 .ctabs-ctab-left{position:absolute;top:0;right:0;bottom:0;left:0}.ctabs-ctab-right{position:absolute;top:0;right:0;bottom:0;left:0}.ctabs-ctab-title-wrapper{position:absolute;top:0;right:20px;bottom:0;left:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ctabs-ctab-icon-wrapper{position:absolute;top:0;bottom:0;left:0;width:16px}.ctabs-ctab-close-wrapper{position:absolute;top:0;right:0;bottom:0;width:20px}
