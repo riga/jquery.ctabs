@@ -16,7 +16,7 @@
         options: {
             active: 0,
             add: function(){},
-            cssFlex: true,
+            cssFlex: false,
             headLeft: "",
             headLeftWidth: 0,
             headRight: "",
@@ -24,8 +24,6 @@
             height: "100%",
             icon: "span",
             marker: "*",
-            maxTabWidth: 180,
-            minTabWidth: 80,
             showHash: true,
             width: "100%"
         },
@@ -59,9 +57,8 @@
                     // dynamic
                     break;
                 case "cssFlex":
-                    if (!this._applyCssFlex(value)) {
-                        return;
-                    }
+                    // singular option
+                    return;
                     break;
                 case "headLeft":
                     if (!this._applyHeadLeft(value)) {
@@ -90,6 +87,7 @@
                     break;
                 case "icon":
                     // singular option
+                    return;
                     break;
                 case "marker":
                     if (!this._applyMarker(value)) {
@@ -123,15 +121,12 @@
 
         _refresh: function() {
             this._applyActive(this.options.active);
-            this._applyCssFlex(this.options.cssFlex);
             this._applyHeadLeft(this.options.headLeft);
             this._applyHeadLeftWidth(this.options.headLeftWidth);
             this._applyHeadRight(this.options.headRight);
             this._applyHeadRightWidth(this.options.headRightWidth);
             this._applyHeight(this.options.height);
             this._applyMarker(this.options.marker);
-            this._applyMaxTabWidth(this.options.maxTabWidth);
-            this._applyMinTabWidth(this.options.minTabWidth);
             this._applyWidth(this.options.width);
             // try to resize
             this._resize();
@@ -201,6 +196,7 @@
                 .appendTo(head);
             var headCenter = $("<div>")
                 .addClass("ctabs-head-center")
+                .addClass(this.options.cssFlex ? "ctabs-head-center-flex" : "ctabs-head-center-fix")
                 .appendTo(headCenterWrapper);
             // adder
             var adder = $("<div>")
@@ -254,12 +250,9 @@
 
             // ctab
             var ctab = $("<div>")
-                .addClass("ctabs-ctab")
-                .css({
-                    'min-width': this.options.minTabWidth,
-                    'max-width': this.options.maxTabWidth,
-                    'width': this.options.maxTabWidth
-                }).attr("hash", hash)
+                .addClass("ctabs-ctab ctabs-ctab-dimensions")
+                .addClass(this.options.cssFlex ? "ctabs-ctab-flex" : "ctabs-ctab-fix")
+                .attr("hash", hash)
                 .insertBefore(this.nodes.adder);
             // ctab left
             var ctabLeft = $("<div>")
@@ -346,21 +339,24 @@
             }
             // calculate layout values
             var children      = this.nodes.headCenter.children(".ctabs-ctab"),
+                firstChild    = children.first(),
                 nChildren     = parseFloat(children.size()),
                 currentWidth  = children.first().width(),
                 outerWidth    = this.nodes.headCenter.width(),
                 adderWidth    = this.nodes.adder.width(),
+                maxTabWidth   = parseInt(firstChild.css('max-width')),
+                minTabWidth   = parseInt(firstChild.css('min-width')),
                 innerWidth    = adderWidth + nChildren * currentWidth - (nChildren - 1) * this._layout.overlap,
-                maxInnerWidth = adderWidth + nChildren * this.options.maxTabWidth - (nChildren - 1) * this._layout.overlap,
-                minInnerWidth = adderWidth + nChildren * this.options.minTabWidth - (nChildren - 1) * this._layout.overlap,
+                maxInnerWidth = adderWidth + nChildren * maxTabWidth - (nChildren - 1) * this._layout.overlap,
+                minInnerWidth = adderWidth + nChildren * minTabWidth - (nChildren - 1) * this._layout.overlap,
                 targetWidth   = currentWidth;
             // determine the new width of the ctabs
             if (outerWidth >= maxInnerWidth) {
                 // the element is big enough, no need to shrink, use the maximum width
-                targetWidth = this.options.maxTabWidth;
+                targetWidth = maxTabWidth;
             } else if (outerWidth <= minInnerWidth) {
                 // the element is too small, all ctabs are their minimum, use the minimum width
-                targetWidth = this.options.minTabWidth;
+                targetWidth = minTabWidth;
             } else {
                 // the ctab widths need to be scaled, revert the inner width calculation to obtain the new ctab width
                 targetWidth = (outerWidth - adderWidth + (nChildren - 1) * this._layout.overlap) / nChildren;
@@ -395,21 +391,6 @@
             return true;
         },
 
-        _applyCssFlex: function(value) {
-            // change the headCenter class
-            this.nodes.headCenter.toggleClass("ctabs-head-center-flex", value);
-            this.nodes.headCenter.toggleClass("ctabs-head-center-fix", !value);
-            // change the classes of the ctabs
-            $.each(this.store, function(hash, obj) {
-                obj.ctab
-                    .toggleClass("ctabs-ctab-flex", value)
-                    .toggleClass("ctabs-ctab-fix", !value);
-            });
-            // resize at the end
-            this._resize();
-            return true;
-        },
-
         _applyHeadLeft: function(value) {
             this.nodes.headLeft.empty().append(value);
             return true;
@@ -441,22 +422,6 @@
             var that = this;
             $.each(this.store, function(hash) {
                 that.mark(hash, undefined, value);
-            });
-            return true;
-        },
-
-        _applyMaxTabWidth: function(value) {
-            // apply the value to the ctab
-            $.each(this.store, function(hash, obj) {
-                obj.ctab.css('max-width', value);
-            });
-            return true;
-        },
-
-        _applyMinTabWidth: function(value) {
-            // apply the value to the ctab
-            $.each(this.store, function(hash, obj) {
-                obj.ctab.css('min-width', value);
             });
             return true;
         },
@@ -511,8 +476,6 @@
             this.hashes.push(hash);
             // create the ctab
             this._createCTab(hash);
-            // apply cssFlex to add the behavior-specific classes to the ctab
-            this._applyCssFlex(this.options.cssFlex);
             return this.store[hash];
         },
 
@@ -618,7 +581,7 @@
             if (modified === undefined) {
                 modified = this.modified(hash);
             }
-            this.store[hash].marker.html(modified ? (marker || this.options.marker) : '');
+            this.store[hash].marker.html(modified ? (marker || this.options.marker) : "");
         },
 
         resize: function() {

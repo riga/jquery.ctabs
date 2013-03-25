@@ -69,6 +69,10 @@
     margin-right: -20px;
     box-shadow: inset 0px 0px 1px black;
 }
+.ctabs-ctab-dimensions {
+    min-width: 80px;
+    max-width: 180px;
+}
 .ctabs-ctab-active {
     z-index: 1001;
     background-color: blue;
@@ -79,7 +83,6 @@
     -moz-box-flex: 1;
 }
 .ctabs-ctab-fix {
-    position: relative;
     display: inline-block;
 }
 
