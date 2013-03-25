@@ -142,7 +142,7 @@
         _prepare: function() {
             // collect data
             var that = this,
-                tabList = this.element.find("ol, ul").first(),
+                tabList = this.element.find("ol, ul").first().hide(),
                 tabs = tabList.children();
             // global storage and a list to keep track of the order
             this.store = {};
@@ -177,18 +177,24 @@
                 .appendTo(this.element);
             // head left
             var headLeftWrapper = $("<div>")
-                .addClass("ctabs-head-left-wrapper ctabs-table")
+                .addClass("ctabs-head-left-wrapper")
                 .appendTo(head);
-            var headLeft = $("<div>")
-                .addClass("ctabs-head-left ctabs-table-cell")
+            var headLeftTable = $("<div>")
+                .addClass("ctabs-table")
                 .appendTo(headLeftWrapper);
+            var headLeft = $("<div>")
+                .addClass("ctabs-table-cell-center")
+                .appendTo(headLeftTable);
             // head right
             var headRightWrapper = $("<div>")
-                .addClass("ctabs-head-right-wrapper ctabs-table")
+                .addClass("ctabs-head-right-wrapper")
                 .appendTo(head);
-            var headRight = $("<div>")
-                .addClass("ctabs-head-right ctabs-table-cell")
+            var headRightTable = $("<div>")
+                .addClass("ctabs-table")
                 .appendTo(headRightWrapper);
+            var headRight = $("<div>")
+                .addClass("ctabs-table-cell-center")
+                .appendTo(headRightTable);
             // head center
             var headCenterWrapper = $("<div>")
                 .addClass("ctabs-head-center-wrapper")
@@ -208,7 +214,6 @@
             // make the tabs sortable using jQuery UI's sortable widget
             $(headCenter).sortable({
                 axis: "x",
-                cursor: "default",
                 tolerance: "pointer",
                 distance: 20,
                 items: ".ctabs-ctab",
@@ -594,7 +599,7 @@
             }
             this.store[hash].icon.remove();
             this.store[hash].icon = icon;
-            this.store[hash].iconBox.append(icon);
+            this.store[hash].iconWrapper.append(icon);
         },
 
         modified: function(hash) {
