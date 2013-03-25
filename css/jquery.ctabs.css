@@ -70,8 +70,6 @@
     position: relative;
     display: block;
     height: 22px;
-    min-width: 20px;
-    max-width: 180px;
     margin-right: -20px;
     box-shadow: inset 0px 0px 1px black;
 }
@@ -87,7 +85,6 @@
 .ctabs-ctab-fix {
     position: relative;
     display: inline-block;
-    width: 180px;
 }
 
 .ctabs-ctab-center {

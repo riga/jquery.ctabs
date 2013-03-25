@@ -16,7 +16,6 @@
         options: {
             active: 0,
             add: function(){},
-            headerHeight: 30,
             headLeft: "",
             headLeftWidth: 0,
             headRight: "",
@@ -25,14 +24,17 @@
             icon: "span",
             marker: "*",
             maxTabWidth: 180,
-            minTabWidth: 20,
+            minTabWidth: 160,
             showHash: true,
-            tabHeight: 25,
             useFlex: true,
             width: "100%"
         },
 
-        workflow: {
+        _layout: {
+            overlap: 20
+        },
+
+        _workflow: {
             currentHash: null
         },
 
@@ -59,9 +61,6 @@
                 case "add":
                     // dynamic
                     break;
-                case "headerHeight":
-                    // TODO
-                    break;
                 case "headLeft":
                     // TODO
                     break;
@@ -84,16 +83,17 @@
                     // TODO
                     break;
                 case "maxTabWidth":
-                    // TODO
+                    if (!this._applyMaxTabWidth(value)) {
+                        return;
+                    }
                     break;
                 case "minTabWidth":
-                    // TODO
+                    if (!this._applyMinTabWidth(value)) {
+                        return;
+                    }
                     break;
                 case "showHash":
                     // dynamic
-                    break;
-                case "tabHeight":
-                    // TODO
                     break;
                 case "useFlex":
                     if (!this._applyUseFlex(value)) {
@@ -213,6 +213,7 @@
                 right: this.options.headRightWidth
             });
             this._applyUseFlex(this.options.useFlex);
+            this.resize();
         },
 
         _fillTarget: function() {
@@ -232,7 +233,11 @@
 
             this.store[hash].ctab = ctab = $("<div>")
                 .addClass("ctabs-ctab")
-                .attr("hash", hash)
+                .css({
+                    'min-width': this.options.minTabWidth,
+                    'max-width': this.options.maxTabWidth,
+                    'width': this.options.maxTabWidth
+                }).attr("hash", hash)
                 .insertBefore(this.nodes.adder);
             var tabLeft = $("<div>")
                 .addClass("ctabs-ctab-left")
@@ -297,12 +302,30 @@
         },
 
         _resize: function() {
-            // TODO
+            var children      = this.nodes.headCenter.children(".ctabs-ctab"),
+                nChildren     = parseFloat(children.size()),
+                currentWidth  = children.first().width(),
+                outerWidth    = this.nodes.headCenter.width(),
+                adderWidth    = this.nodes.adder.width(),
+                innerWidth    = adderWidth + nChildren * currentWidth - (nChildren - 1) * this._layout.overlap,
+                maxInnerWidth = adderWidth + nChildren * this.options.maxTabWidth - (nChildren - 1) * this._layout.overlap,
+                minInnerWidth = adderWidth + nChildren * this.options.minTabWidth - (nChildren - 1) * this._layout.overlap,
+                targetWidth   = currentWidth;
+            if (outerWidth >= maxInnerWidth) {
+                targetWidth = this.options.maxTabWidth;
+            } else if (outerWidth <= minInnerWidth) {
+                targetWidth = this.options.minTabWidth;
+            } else {
+                targetWidth = (outerWidth - adderWidth + (nChildren - 1) * this._layout.overlap) / nChildren;
+            }
+            if (targetWidth != currentWidth) {
+                children.width(targetWidth);
+            }
         },
 
         _updateActive: function() {
             var that = this;
-            var hash = this.workflow.currentHash;
+            var hash = this._workflow.currentHash;
             if (!hash) {
                 this.options.active = null;
             }
@@ -321,6 +344,16 @@
                 return true;
             }
             return false;
+        },
+
+        _applyMaxTabWidth: function(value) {
+            this.ctabs.css('max-width', value);
+            return true;
+        },
+
+        _applyMinTabWidth: function(value) {
+            this.ctabs.css('min-width', value);
+            return true;
         },
 
         _applyUseFlex: function(value) {
@@ -373,7 +406,7 @@
             if (!this.store[hash]) {
                 return;
             }
-            if (this.workflow.currentHash == hash) {
+            if (this._workflow.currentHash == hash) {
                 this.deselect();
             }
             this.store[hash].ctab.remove();
@@ -393,17 +426,17 @@
             this.deselect();
             this.store[hash].ctab.toggleClass("ctabs-ctab-active", true);
             this.store[hash].panel.show();
-            this.workflow.currentHash = hash;
+            this._workflow.currentHash = hash;
             this._updateActive();
         },
 
         deselect: function() {
-            if (!this.workflow.currentHash) {
+            if (!this._workflow.currentHash) {
                 return;
             }
-            this.store[this.workflow.currentHash].panel.hide();
-            this.store[this.workflow.currentHash].ctab.toggleClass("ctabs-ctab-active", false);
-            this.workflow.currentHash = null;
+            this.store[this._workflow.currentHash].panel.hide();
+            this.store[this._workflow.currentHash].ctab.toggleClass("ctabs-ctab-active", false);
+            this._workflow.currentHash = null;
             this.options.active = null;
         },
 
