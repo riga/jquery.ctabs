@@ -16,6 +16,7 @@
         options: {
             active: 0,
             add: function(){},
+            cssFlex: true,
             headLeft: "",
             headLeftWidth: 0,
             headRight: "",
@@ -24,9 +25,8 @@
             icon: "span",
             marker: "*",
             maxTabWidth: 180,
-            minTabWidth: 160,
+            minTabWidth: 80,
             showHash: true,
-            useFlex: true,
             width: "100%"
         },
 
@@ -42,16 +42,13 @@
 
         _create: function() {
             this._prepare();
-            this._hideSource();
-            this._createTarget();
-            this._fillTarget();
-        },
-
-        _init: function() {
-            this._initTarget();
+            this._setupTarget();
+            this._initialFill();
+            this._refresh();
         },
 
         _setOption: function(key, value) {
+            // try to apply the new option
             switch (key) {
                 case "active":
                     if (!this._applyActive(value)) {
@@ -61,26 +58,43 @@
                 case "add":
                     // dynamic
                     break;
+                case "cssFlex":
+                    if (!this._applyCssFlex(value)) {
+                        return;
+                    }
+                    break;
                 case "headLeft":
-                    // TODO
+                    if (!this._applyHeadLeft(value)) {
+                        return;
+                    }
                     break;
                 case "headLeftWidth":
-                    // TODO
+                    if (!this._applyHeadLeftWidth(value)) {
+                        return;
+                    }
                     break;
                 case "headRight":
-                    // TODO
+                    if (!this._applyHeadRight(value)) {
+                        return;
+                    }
                     break;
                 case "headRightWidth":
-                    // TODO
+                    if (!this._applyHeadRightWidth(value)) {
+                        return;
+                    }
                     break;
                 case "height":
-                    // TODO
+                    if (!this._applyHeight(value)) {
+                        return;
+                    }
                     break;
                 case "icon":
                     // singular option
                     break;
                 case "marker":
-                    // TODO
+                    if (!this._applyMarker(value)) {
+                        return;
+                    }
                     break;
                 case "maxTabWidth":
                     if (!this._applyMaxTabWidth(value)) {
@@ -95,143 +109,146 @@
                 case "showHash":
                     // dynamic
                     break;
-                case "useFlex":
-                    if (!this._applyUseFlex(value)) {
+                case "width":
+                    if (!this._applyWidth(value)) {
                         return;
                     }
-                    break;
-                case "width":
-                    // TODO
                     break;
                 default:
                     break;
             }
-
+            // use _super to change the option
             this._super(key, value);
         },
 
         _refresh: function() {
             this._applyActive(this.options.active);
-            this._applyUseFlex(this.options.useFlex);
+            this._applyCssFlex(this.options.cssFlex);
+            this._applyHeadLeft(this.options.headLeft);
+            this._applyHeadLeftWidth(this.options.headLeftWidth);
+            this._applyHeadRight(this.options.headRight);
+            this._applyHeadRightWidth(this.options.headRightWidth);
+            this._applyHeight(this.options.height);
+            this._applyMarker(this.options.marker);
+            this._applyMaxTabWidth(this.options.maxTabWidth);
+            this._applyMinTabWidth(this.options.minTabWidth);
+            this._applyWidth(this.options.width);
+            // try to resize
+            this._resize();
         },
 
         // --- private methods ---
 
         _prepare: function() {
-            var that = this;
-            this.tabList = this.element.find("ol, ul").first();
-            this.tabs = this.tabList.children();
-            this.anchors = this.tabs.map(function() {
-                return $("a", this);
-            });
-            this.icons = this.tabs.map(function() {
-                return $(that.options.icon, this).first();
-            });
-            this.panels = $();
+            // collect data
+            var that = this,
+                tabList = this.element.find("ol, ul").first(),
+                tabs = tabList.children();
+            // global storage and a list to keep track of the order
             this.store = {};
-            $.each(this.anchors, function(i, anchor) {
+            this.hashes = [];
+            // store data
+            tabs.each(function() {
+                var anchor = $("a", this).first();
                 var hash = anchor.get(0).hash;
+                var icon = $(that.options.icon, this).first();
                 var panel = that.element.children(hash).first();
-                that.panels = that.panels.add(panel);
                 that.store[hash] = {
                     hash: hash,
-                    tab: that.tabs.eq(i),
+                    tab: $(this),
                     anchor: anchor,
                     panel: panel,
-                    icon: that.icons[i]
+                    icon: icon
                 };
+                that.hashes.push(hash);
             });
-            this.ctabs = $();
         },
 
-        _hideSource: function() {
-            this.tabList.hide();
-            this.panels.hide();
-        },
-
-        _createTarget: function() {
+        _setupTarget: function() {
             var that = this;
-            this.element
-                .addClass("ctabs-element")
-                .css({
-                    height: this.options.height,
-                    width: this.options.width
-                });
-            this.nodes = {};
-            this.nodes.head = $("<div>")
+
+            // head
+            var head = $("<div>")
                 .addClass("ctabs-head")
                 .appendTo(this.element);
-            this.nodes.body = $("<div>")
+            // body
+            var body = $("<div>")
                 .addClass("ctabs-body")
                 .appendTo(this.element);
-            this.nodes.headLeft = $("<div>")
-                .addClass("ctabs-head-left ctabs-table-outer")
-                .appendTo(this.nodes.head);
-            $("<div>")
-                .addClass("ctabs-table-inner")
-                .append(this.options.headLeft)
-                .appendTo(this.nodes.headLeft);
-            this.nodes.headRight = $("<div>")
-                .addClass("ctabs-head-right ctabs-table-outer")
-                .appendTo(this.nodes.head);
-            $("<div>")
-                .addClass("ctabs-table-inner")
-                .append(this.options.headRight)
-                .appendTo(this.nodes.headRight);
-            this.nodes.outerHeadCenter = $("<div>")
-                .addClass("ctabs-head-center-outer")
-                .appendTo(this.nodes.head);
-            this.nodes.headCenter = $("<div>")
+            // head left
+            var headLeftWrapper = $("<div>")
+                .addClass("ctabs-head-left-wrapper ctabs-table")
+                .appendTo(head);
+            var headLeft = $("<div>")
+                .addClass("ctabs-head-left ctabs-table-cell")
+                .appendTo(headLeftWrapper);
+            // head right
+            var headRightWrapper = $("<div>")
+                .addClass("ctabs-head-right-wrapper ctabs-table")
+                .appendTo(head);
+            var headRight = $("<div>")
+                .addClass("ctabs-head-right ctabs-table-cell")
+                .appendTo(headRightWrapper);
+            // head center
+            var headCenterWrapper = $("<div>")
+                .addClass("ctabs-head-center-wrapper")
+                .appendTo(head);
+            var headCenter = $("<div>")
                 .addClass("ctabs-head-center")
-                .appendTo(this.nodes.outerHeadCenter);
-            this.nodes.adder = $("<div>")
+                .appendTo(headCenterWrapper);
+            // adder
+            var adder = $("<div>")
                 .addClass("ctabs-adder")
                 .html("+")
-                .appendTo(this.nodes.headCenter)
+                .appendTo(headCenter)
                 .click(function() {
                     that.options.add();
                 });
 
-            $(this.nodes.headCenter).sortable({
+            // make the tabs sortable using jQuery UI's sortable widget
+            $(headCenter).sortable({
                 axis: "x",
                 cursor: "default",
                 tolerance: "pointer",
                 distance: 20,
                 items: ".ctabs-ctab",
                 stop: function(event, ui) {
-                    that._updateActive();
+                    that._sortStop();
                 }
             });
+
+            // store some nodes
+            this.nodes = {
+                body: body,
+                head: head,
+                headLeftWrapper: headLeftWrapper,
+                headLeft: headLeft,
+                headRightWrapper: headRightWrapper,
+                headRight: headRight,
+                headCenterWrapper: headCenterWrapper,
+                headCenter: headCenter,
+                adder: adder
+            };
         },
 
-        _initTarget: function() {
-            // TODO: overthink this method
-            this.nodes.headLeft.css("width", this.options.headLeftWidth);
-            this.nodes.headRight.css("width", this.options.headRightWidth);
-            this.nodes.outerHeadCenter.css({
-                left: this.options.headLeftWidth,
-                right: this.options.headRightWidth
-            });
-            this._applyUseFlex(this.options.useFlex);
-            this.resize();
-        },
-
-        _fillTarget: function() {
+        _initialFill: function() {
             var that = this;
             $.each(this.store, function(hash) {
                 that._createCTab(hash, undefined);
             });
-            this.select(this.anchors[this.options.active].get(0).hash);
+            this.select(this.options.active);
         },
 
         _createCTab: function(hash) {
             var that = this;
+            // hide and re-append the original nodes
             this.store[hash].tab.hide();
             this.store[hash].panel
-                .addClass("ctabs-panel")
+                .hide()
                 .appendTo(this.nodes.body);
 
-            this.store[hash].ctab = ctab = $("<div>")
+            // ctab
+            var ctab = $("<div>")
                 .addClass("ctabs-ctab")
                 .css({
                     'min-width': this.options.minTabWidth,
@@ -239,69 +256,90 @@
                     'width': this.options.maxTabWidth
                 }).attr("hash", hash)
                 .insertBefore(this.nodes.adder);
-            var tabLeft = $("<div>")
+            // ctab left
+            var ctabLeft = $("<div>")
+                .addClass("ctabs-ctab-left-wrapper")
+                .appendTo(ctab);
+            $("<div>")
                 .addClass("ctabs-ctab-left")
+                .appendTo(ctabLeft);
+            // ctab right
+            var ctabRight = $("<div>")
+                .addClass("ctabs-ctab-right-wrapper")
                 .appendTo(ctab);
             $("<div>")
-                .addClass("ctabs-ctab-left-inner")
-                .appendTo(tabLeft);
-            var tabRight = $("<div>")
                 .addClass("ctabs-ctab-right")
-                .appendTo(ctab);
-            $("<div>")
-                .addClass("ctabs-ctab-right-inner")
-                .appendTo(tabRight);
-            var center = $("<div>")
+                .appendTo(ctabRight);
+            // ctab center
+            var ctabCenter = $("<div>")
                 .addClass("ctabs-ctab-center")
                 .appendTo(ctab);
-            var outerIcon = $("<div>")
-                .addClass("ctabs-ctab-icon")
-                .appendTo(center);
-            var innerIcon = $("<div>")
-                .addClass("ctabs-table-outer")
-                .appendTo(outerIcon);
-            this.store[hash].iconBox = icon = $("<div>")
-                .addClass("ctabs-table-inner-left")
+            // icon
+            var iconBoxWrapper = $("<div>")
+                .addClass("ctabs-ctab-icon-wrapper")
+                .appendTo(ctabCenter);
+            var iconBox = $("<div>")
+                .addClass("ctabs-table")
+                .appendTo(iconBoxWrapper);
+            var iconWrapper = $("<div>")
+                .addClass("ctabs-table-cell-left")
                 .append(this.store[hash].icon)
-                .appendTo(innerIcon);
-            var outerClose = $("<div>")
-                .addClass("ctabs-ctab-close")
-                .appendTo(center);
-            var innerClose = $("<div>")
-                .addClass("ctabs-table-outer")
-                .appendTo(outerClose);
-            this.store[hash].close = close = $("<div>")
-                .addClass("ctabs-table-inner-right")
+                .appendTo(iconBox);
+            // close
+            var closeBoxWrapper = $("<div>")
+                .addClass("ctabs-ctab-close-wrapper")
+                .appendTo(ctabCenter);
+            var closeBox = $("<div>")
+                .addClass("ctabs-table")
+                .appendTo(closeBoxWrapper);
+            var close = $("<div>")
+                .addClass("ctabs-table-cell-right")
                 .append("x")
-                .appendTo(innerClose)
+                .appendTo(closeBox)
                 .click(function() {
                     that.remove(hash);
                 });
-            var anchorText = this.store[hash].anchor.html();
+            // title
+            var text = this.store[hash].anchor.html();
             this.store[hash].anchor
                 .empty()
-                .appendTo(center)
+                .appendTo(ctabCenter)
                 .click(function(event) {
                     if (!that.options.showHash) {
                         event.preventDefault();
                     }
                     that.select(hash);
                 });
-            var outerTitle = $("<div>")
-                .addClass("ctabs-ctab-title")
+            var titleBoxWrapper = $("<div>")
+                .addClass("ctabs-ctab-title-wrapper")
                 .appendTo(this.store[hash].anchor);
-            var innerTitle = $("<div>")
-                .addClass("ctabs-table-outer")
-                .appendTo(outerTitle);
-            this.store[hash].title = $("<div>")
-                .addClass("ctabs-table-inner")
-                .html(anchorText)
-                .appendTo(innerTitle);
+            var titleBox = $("<div>")
+                .addClass("ctabs-table")
+                .appendTo(titleBoxWrapper);
+            var titleWrapper = $("<div>")
+                .addClass("ctabs-table-cell")
+                .appendTo(titleBox);
+            var title = $("<span>")
+                .html(text)
+                .appendTo(titleWrapper);
+            // marker
+            this.store[hash].marker = $("<span>").insertBefore(title);
 
-            this.ctabs = this.ctabs.add(ctab);
+            // store some nodes
+            $.extend(this.store[hash], {
+                ctab: ctab,
+                iconWrapper: iconWrapper,
+                close: close,
+                title: title
+            });
         },
 
         _resize: function() {
+            // the methods only applies when cssFlex is disabled
+            if (this.options.cssFlex) {
+                return;
+            }
+            // calculate layout values
             var children      = this.nodes.headCenter.children(".ctabs-ctab"),
                 nChildren     = parseFloat(children.size()),
                 currentWidth  = children.first().width(),
@@ -311,59 +349,124 @@
                 maxInnerWidth = adderWidth + nChildren * this.options.maxTabWidth - (nChildren - 1) * this._layout.overlap,
                 minInnerWidth = adderWidth + nChildren * this.options.minTabWidth - (nChildren - 1) * this._layout.overlap,
                 targetWidth   = currentWidth;
+            // determine the new width of the ctabs
             if (outerWidth >= maxInnerWidth) {
+                // the element is big enough, no need to shrink, use the maximum width
                 targetWidth = this.options.maxTabWidth;
             } else if (outerWidth <= minInnerWidth) {
+                // the element is too small, all ctabs are their minimum, use the minimum width
                 targetWidth = this.options.minTabWidth;
             } else {
+                // the ctab widths need to be scaled, revert the inner width calculation to obtain the new ctab width
                 targetWidth = (outerWidth - adderWidth + (nChildren - 1) * this._layout.overlap) / nChildren;
             }
+            // only apply the new width, when it differs from the old one
             if (targetWidth != currentWidth) {
                 children.width(targetWidth);
             }
         },
 
+        _sortStop: function() {
+            // reorder the hashes
+            this.hashes = $.map(this.nodes.headCenter.children(".ctabs-ctab"), function(ctab) {
+                return $(ctab).attr("hash");
+            });
+            // update the active options
+            this._updateActive();
+        },
+
         _updateActive: function() {
-            var that = this;
-            var hash = this._workflow.currentHash;
-            if (!hash) {
+            if (!this._workflow.currentHash) {
                 this.options.active = null;
             }
-            this.nodes.headCenter.children(".ctabs-ctab").each(function(i, ctab) {
-                if ($(ctab).attr("hash") == hash) {
-                    that.options.active = i;
-                    return false;
-                }
-            });
+            // simply array index search
+            var idx = $.inArray(this._workflow.currentHash, this.hashes)
+            this.options.active = idx >= 0 ? idx : null;
         },
 
         _applyActive: function(value) {
-            var ctab = this.nodes.headCenter.children(".ctabs-ctab").eq(value);
-            if (ctab) {
-                this.select(ctab.attr("hash"));
-                return true;
-            }
-            return false;
+            // declarative wrapper
+            this.select(value);
+            return true;
+        },
+
+        _applyCssFlex: function(value) {
+            // change the headCenter class
+            this.nodes.headCenter.toggleClass("ctabs-head-center-flex", value);
+            this.nodes.headCenter.toggleClass("ctabs-head-center-fix", !value);
+            // change the classes of the ctabs
+            $.each(this.store, function(hash, obj) {
+                obj.ctab
+                    .toggleClass("ctabs-ctab-flex", value)
+                    .toggleClass("ctabs-ctab-fix", !value);
+            });
+            // resize at the end
+            this._resize();
+            return true;
+        },
+
+        _applyHeadLeft: function(value) {
+            this.nodes.headLeft.empty().append(value);
+            return true;
+        },
+
+        _applyHeadLeftWidth: function(value) {
+            this.nodes.headLeftWrapper.css("width", value);
+            this.nodes.headCenterWrapper.css("left", value);
+            return true;
+        },
+
+        _applyHeadRight: function(value) {
+            this.nodes.headRight.empty().append(value);
+            return true;
+        },
+
+        _applyHeadRightWidth: function(value) {
+            this.nodes.headRightWrapper.css("width", value);
+            this.nodes.headCenterWrapper.css("right", value);
+            return true;
+        },
+
+        _applyHeight: function(value) {
+            this.element.css("height", value);
+            return true;
+        },
+
+        _applyMarker: function(value) {
+            var that = this;
+            $.each(this.store, function(hash) {
+                that.mark(hash);
+            });
+            return true;
         },
 
         _applyMaxTabWidth: function(value) {
-            this.ctabs.css('max-width', value);
+            // apply the value to the ctab
+            $.each(this.store, function(hash, obj) {
+                obj.ctab.css('max-width', value);
+            });
             return true;
         },
 
         _applyMinTabWidth: function(value) {
-            this.ctabs.css('min-width', value);
+            // apply the value to the ctab
+            $.each(this.store, function(hash, obj) {
+                obj.ctab.css('min-width', value);
+            });
             return true;
         },
 
-        _applyUseFlex: function(value) {
-            this.nodes.headCenter.toggleClass("ctabs-head-center-flex", value);
-            this.ctabs.toggleClass("ctabs-ctab-flex", value);
-            this.nodes.headCenter.toggleClass("ctabs-head-center-fix", !value);
-            this.ctabs.toggleClass("ctabs-ctab-fix", !value);
+        _applyWidth: function(value) {
+            this.element.css("width", value);
             return true;
         },
 
+        _getHash: function(hashOrIdx) {
+            if (typeof(hashOrIdx) == "number") {
+                return this.hashes[hashOrIdx] || hashOrIdx;
+            }
+            return hashOrIdx;
+        },
 
         // --- public methods ---
 
@@ -371,76 +474,106 @@
             if (this.store[hash]) {
                 return;
             }
-            var id = hash;
-            if (hash[0] == "#") {
-                id = hash.substr(1);
-            } else {
-                hash = "#" + hash;
-            }
-            data = $.extend({title: "", content: ""}, data);
-            var tab = $("<li>").appendTo(this.tabList);
-            var anchor = $("<a>")
-                .attr("href", hash)
-                .append(data.title)
-                .appendTo(tab);
-            var panel;
+            // extend data by defaults
+            data = $.extend({title: "", content: "", icon: $()}, data);
+
+            // create the structure based on the markup scheme
+            // in order to simply call _createCTab
+            var tabList = this.element.find("ol, ul").first(),
+                tab = $("<li>").appendTo(tabList),
+                anchor = $("<a>")
+                    .attr("href", hash)
+                    .append(data.title)
+                    .appendTo(tab),
+                panel;
             if (typeof(data.content) == "string") {
                 panel = $("<div>").append(data.content);
             } else {
                  panel = $(data.content);
             }
-            panel.attr("id", hash);
+            panel.attr("id", hash.substr(1));
             this.element.append(panel);
+
+            // create a new store object
             this.store[hash] = {
                 hash: hash,
                 tab: tab,
                 anchor: anchor,
-                panel: panel
+                panel: panel,
+                icon: data.icon
             };
+            // push the hash to the list
+            this.hashes.push(hash);
+            // create the ctab
             this._createCTab(hash);
-            this._applyUseFlex(this.options.useFlex);
+            // apply cssFlex to add the behavior-specific classes to the ctab
+            this._applyCssFlex(this.options.cssFlex);
             return this.store[hash];
         },
 
         remove: function(hash) {
+            hash = this._getHash(hash);
             if (!this.store[hash]) {
                 return;
             }
-            if (this._workflow.currentHash == hash) {
-                this.deselect();
-            }
+            // try to deselect
+            this.deselect(hash);
+            // remove the markup
             this.store[hash].ctab.remove();
             this.store[hash].panel.remove();
+            // try to resize 
+            this._resize();
+            // remove the hash for the list
+            var idx = $.inArray(hash, this.hashes);
+            if (idx >= 0) {
+                this.hashes.splice(idx, 1);
+            }
+            // delete the store object
             delete this.store[hash];
         },
 
-        get: function(hash) {
-            return this.store[hash];
+        get: function(hash, key) {
+            hash = this._getHash(hash);
+            if (!this.store[hash]) {
+                return null;
+            }
+            return key ? this.store[hash][key] : this.store[hash];
         },
 
         select: function(hash) {
-            var that = this;
+            hash = this._getHash(hash);
             if (!this.store[hash]) {
                 return;
             }
+            // deselect the current tab
             this.deselect();
-            this.store[hash].ctab.toggleClass("ctabs-ctab-active", true);
+            // show the panel and add the ctab's active class
             this.store[hash].panel.show();
+            this.store[hash].ctab.toggleClass("ctabs-ctab-active", true);
+            // update values
             this._workflow.currentHash = hash;
             this._updateActive();
         },
 
-        deselect: function() {
-            if (!this._workflow.currentHash) {
+        deselect: function(hash) {
+            hash = this._getHash(hash);
+            if (!this._workflow.currentHash || !this.store[this._workflow.currentHash]) {
                 return;
             }
+            // check the hash condition if there is any
+            if (hash && this._workflow.currentHash != hash) {
+                return;
+            }
+            // hide the panel and remove the ctab's active class
             this.store[this._workflow.currentHash].panel.hide();
             this.store[this._workflow.currentHash].ctab.toggleClass("ctabs-ctab-active", false);
+            // update values
             this._workflow.currentHash = null;
-            this.options.active = null;
+            this._updateActive();
         },
 
         title: function(hash, title) {
+            hash = this._getHash(hash);
             if (!this.store[hash]) {
                 return;
             }
@@ -450,37 +583,43 @@
             this.store[hash].title.html(title);
         },
 
+        // TODO
         icon: function(hash, icon) {
-
+            hash = this._getHash(hash);
             if (!this.store[hash]) {
                 return;
             }
             if (!icon) {
                 return this.store[hash].icon;
             }
-            var oldIcon = this.store[hash].icon;
-            oldIcon.remove();
-            this.icons = $.map(this.icons, function() {
-                return this == oldIcon ? icon : this;
-            });
+            this.store[hash].icon.remove();
             this.store[hash].icon = icon;
             this.store[hash].iconBox.append(icon);
         },
 
-        mark: function(hash, modified) {
-            modified = modified === undefined ? true : modified;
-            var title = this.title(hash);
-            if (modified && title[0] != this.options.marker) {
-                this.title(hash, this.options.marker + title);
-            } else if (!modified && title[0] == this.options.marker) {
-                this.title(hash, title.substr(1));
+        modified: function(hash) {
+            hash = this._getHash(hash);
+            if (!this.store[hash]) {
+                return null;
             }
+            return !!this.store[hash].marker.html();
+        },
+
+        mark: function(hash, modified) {
+            hash = this._getHash(hash);
+            if (!this.store[hash]) {
+                return;
+            }
+            var marker = this.store[hash].marker;
+            if (modified === undefined) {
+                modified = this.modified(hash);
+            }
+            this.store[hash].marker.html(modified ? this.options.marker : '');
         },
 
         resize: function() {
-            if (this.options.useFlex) {
-                return;
-            }
+            // this method simply wrapps around _resize
+            // overwrite to add custom behavior
             this._resize();
         }
     });

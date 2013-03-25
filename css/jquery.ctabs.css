@@ -1,7 +1,3 @@
-.ctabs-element {
-
-}
-
 .ctabs-head {
     position: absolute;
     top: 0px;
@@ -22,21 +18,21 @@
     overflow: hidden;
 }
 
-.ctabs-head-left {
+.ctabs-head-left-wrapper {
     position: absolute;
     top: 0px;
     bottom: 0px;
     left: 0px;
 }
 
-.ctabs-head-right {
+.ctabs-head-right-wrapper {
     position: absolute;
     top: 0px;
     bottom: 0px;
     right: 0px;
 }
 
-.ctabs-head-center-outer {
+.ctabs-head-center-wrapper {
     position: absolute;
     top: 6px;
     bottom: 0px;
@@ -94,7 +90,7 @@
     margin: 0px 20px;
 }
 
-.ctabs-ctab-left {
+.ctabs-ctab-left-wrapper {
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -104,7 +100,7 @@
     background-color: red;
 }
 
-.ctabs-ctab-right {
+.ctabs-ctab-right-wrapper {
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -114,7 +110,7 @@
     background-color: green;
 }
 
-.ctabs-ctab-left-inner {
+.ctabs-ctab-left {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -122,7 +118,7 @@
     left: 0px;
 }
 
-.ctabs-ctab-left-inner {
+.ctabs-ctab-right {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -130,7 +126,7 @@
     left: 0px;
 }
 
-.ctabs-ctab-title {
+.ctabs-ctab-title-wrapper {
     position: absolute;
     top: 0px;
     right: 20px;
@@ -141,7 +137,7 @@
     text-overflow: ellipsis;
 }
 
-.ctabs-ctab-icon {
+.ctabs-ctab-icon-wrapper {
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -149,7 +145,7 @@
     width: 16px;
 }
 
-.ctabs-ctab-close {
+.ctabs-ctab-close-wrapper {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -157,34 +153,30 @@
     width: 20px;
 }
 
-.ctabs-panel {
-    display: none;
-}
-
-.ctabs-table-outer {
+.ctabs-table {
     display: table;
     height: 100%;
     width: 100%;
 }
 
-.ctabs-table-inner {
+.ctabs-table-cell {
     display: table-cell;
     vertical-align: middle;
 }
 
-.ctabs-table-inner-center {
+.ctabs-table-cell-center {
     display: table-cell;
     vertical-align: middle;
     text-align: center;
 }
 
-.ctabs-table-inner-left {
+.ctabs-table-cell-left {
     display: table-cell;
     vertical-align: middle;
     text-align: left;
 }
 
-.ctabs-table-inner-right {
+.ctabs-table-cell-right {
     display: table-cell;
     vertical-align: middle;
     text-align: right;
