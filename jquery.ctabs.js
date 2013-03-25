@@ -16,6 +16,13 @@
         options: {
             active: 0,
             add: null,
+            afterAdd: null,
+            afterDeselect: null,
+            afterRemove: null,
+            afterSelect: null,
+            beforeDeselect: null,
+            beforeRemove: null,
+            beforeSelect: null,
             cssFlex: true,
             headLeft: "",
             headLeftWidth: 0,
@@ -57,9 +64,6 @@
                         return;
                     }
                     break;
-                case "add":
-                    // dynamic
-                    break;
                 case "cssFlex":
                     // singular
                     return;
@@ -93,9 +97,6 @@
                     // singular
                     return;
                     break;
-                case "iconFormatter":
-                    // dynamic
-                    break;
                 case "marker":
                     if (!this._applyMarker(value)) {
                         return;
@@ -110,9 +111,6 @@
                     if (!this._applyMinTabWidth(value)) {
                         return;
                     }
-                    break;
-                case "showHash":
-                    // dynamic
                     break;
                 case "width":
                     if (!this._applyWidth(value)) {
@@ -229,12 +227,12 @@
                 tolerance: "pointer",
                 items: ".ctabs-ctab",
                 stop: function(event, ui) {
-                    that._sortStop();
+                    that._stopSort();
                 }
             }), sortableOptions).disableSelection();
 
             // store some nodes
-            this.nodes = {
+            this._nodes = {
                 body: body,
                 head: head,
                 headLeftWrapper: headLeftWrapper,
@@ -253,7 +251,6 @@
                 that._createCTab(hash, undefined);
             });
             this._refresh();
-            this.select(this.options.active);
         },
 
         _createCTab: function(hash) {
@@ -262,14 +259,14 @@
             this.store[hash].tab.hide();
             this.store[hash].panel
                 .hide()
-                .appendTo(this.nodes.body);
+                .appendTo(this._nodes.body);
 
             // ctab
             var ctab = $("<div>")
                 .addClass("ctabs-ctab ctabs-ctab-dimensions")
                 .addClass(this.options.cssFlex ? "ctabs-ctab-flex" : "ctabs-ctab-fix")
                 .attr("hash", hash)
-                .insertBefore(this.nodes.adder);
+                .insertBefore(this._nodes.adder);
             // ctab left
             var ctabLeft = $("<div>")
                 .addClass("ctabs-ctab-left-wrapper")
@@ -355,14 +352,14 @@
             }
             // calculate layout values
             var wf              = this._workflow;
-            var children        = this.nodes.headCenter.children(".ctabs-ctab");
+            var children        = this._nodes.headCenter.children(".ctabs-ctab");
             var firstChild      = children.first();
             var nChildren       = parseFloat(children.size());
             wf.minTabWidth      = wf.minTabWidth || parseInt(firstChild.css('min-width'));
             wf.maxTabWidth      = wf.maxTabWidth || parseInt(firstChild.css('max-width'));
             var currentTabWidth = firstChild.width();
-            var outerWidth      = this.nodes.headCenter.width();
-            var adderWidth      = this.nodes.adder.width();
+            var outerWidth      = this._nodes.headCenter.width();
+            var adderWidth      = this._nodes.adder.width();
             var innerWidth      = adderWidth + nChildren * currentTabWidth - (nChildren - 1) * this._settings.overlap;
             var maxInnerWidth   = adderWidth + nChildren * wf.maxTabWidth - (nChildren - 1) * this._settings.overlap;
             var minInnerWidth   = adderWidth + nChildren * wf.minTabWidth - (nChildren - 1) * this._settings.overlap;
@@ -392,9 +389,9 @@
             }, this._settings.resizeCacheDelay);
         },
 
-        _sortStop: function() {
+        _stopSort: function(event, ui) {
             // reorder the hashes
-            this.hashes = $.map(this.nodes.headCenter.children(".ctabs-ctab"), function(ctab) {
+            this.hashes = $.map(this._nodes.headCenter.children(".ctabs-ctab"), function(ctab) {
                 return $(ctab).attr("hash");
             });
             // update the active options
@@ -417,24 +414,24 @@
         },
 
         _applyHeadLeft: function(value) {
-            this.nodes.headLeft.empty().append(value);
+            this._nodes.headLeft.empty().append(value);
             return true;
         },
 
         _applyHeadLeftWidth: function(value) {
-            this.nodes.headLeftWrapper.css("width", value);
-            this.nodes.headCenterWrapper.css("left", value);
+            this._nodes.headLeftWrapper.css("width", value);
+            this._nodes.headCenterWrapper.css("left", value);
             return true;
         },
 
         _applyHeadRight: function(value) {
-            this.nodes.headRight.empty().append(value);
+            this._nodes.headRight.empty().append(value);
             return true;
         },
 
         _applyHeadRightWidth: function(value) {
-            this.nodes.headRightWrapper.css("width", value);
-            this.nodes.headCenterWrapper.css("right", value);
+            this._nodes.headRightWrapper.css("width", value);
+            this._nodes.headCenterWrapper.css("right", value);
             return true;
         },
 
@@ -501,6 +498,10 @@
             this.hashes.push(hash);
             // create the ctab
             this._createCTab(hash);
+            // fire afterAdd
+            if ($.isFunction(this.options.afterAdd)) {
+                this.options.afterAdd(hash);
+            }
             return this.store[hash];
         },
 
@@ -510,7 +511,15 @@
                 return;
             }
             // try to deselect
-            this.deselect(hash);
+            if (this.deselect(hash) === false) {
+                return false;
+            }
+            // fire beforeRemove
+            if ($.isFunction(this.options.beforeRemove)) {
+                if (this.options.beforeRemove(hash) === false) {
+                    return false;
+                }
+            }
             // remove the markup
             this.store[hash].ctab.remove();
             this.store[hash].panel.remove();
@@ -523,6 +532,10 @@
             }
             // delete the store object
             delete this.store[hash];
+            // fire afterRemove
+            if ($.isFunction(this.options.afterRemove)) {
+                this.options.afterRemove(hash);
+            }
         },
 
         get: function(hash, key) {
@@ -533,19 +546,35 @@
             return key ? this.store[hash][key] : this.store[hash];
         },
 
+        nodes: function(key) {
+            return key ? this._nodes[key] : this._nodes;
+        },
+
         select: function(hash) {
             hash = this._getHash(hash);
             if (!this.store[hash]) {
                 return;
             }
             // deselect the current tab
-            this.deselect();
+            if (this.deselect() === false) {
+                return false;
+            }
+            // fire beforeSelect
+            if ($.isFunction(this.options.beforeSelect)) {
+                if (this.options.beforeSelect(hash) === false) {
+                    return false;
+                }
+            }
             // show the panel and add the ctab's active class
             this.store[hash].panel.show();
             this.store[hash].ctab.toggleClass("ctabs-ctab-active", true);
             // update values
             this._workflow.currentHash = hash;
             this._updateActive();
+            // fire afterSelect
+            if ($.isFunction(this.options.afterSelect)) {
+                this.options.afterSelect(hash);
+            }
         },
 
         deselect: function(hash) {
@@ -557,12 +586,22 @@
             if (hash && this._workflow.currentHash != hash) {
                 return;
             }
+            // fire beforeDeselect
+            if ($.isFunction(this.options.beforeDeselect)) {
+                if (this.options.beforeDeselect(this._workflow.currentHash) === false) {
+                    return false;
+                }
+            }
             // hide the panel and remove the ctab's active class
             this.store[this._workflow.currentHash].panel.hide();
             this.store[this._workflow.currentHash].ctab.toggleClass("ctabs-ctab-active", false);
             // update values
             this._workflow.currentHash = null;
             this._updateActive();
+            // fire afterDeselect
+            if ($.isFunction(this.options.afterDeselect)) {
+                this.options.afterDeselect(hash);
+            }
         },
 
         title: function(hash, title) {
