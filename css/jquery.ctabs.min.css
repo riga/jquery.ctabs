@@ -1,4 +1,12 @@
-.ctabs-head{position:absolute;top:0;right:0;left:0;height:28px;overflow:hidden;background-color:lightgrey}.ctabs-body{position:absolute;top:28px;right:0;bottom:0;left:0;overflow:hidden}
+/*!
+ * jQuery Chrome Tabs Plugin v0.1
+ * https://github.com/riga/jquery.ctabs
+ *
+ * Copyright 2012, Marcel Rieger
+ * Dual licensed under the MIT or GPL Version 3 licenses.
+ * http://www.opensource.org/licenses/mit-license
+ * http://www.opensource.org/licenses/GPL-3.0
+ */.ctabs-head{position:absolute;top:0;right:0;left:0;height:28px;overflow:hidden;background-color:lightgrey}.ctabs-body{position:absolute;top:28px;right:0;bottom:0;left:0;overflow:hidden}
 .ctabs-head-left-wrapper{position:absolute;top:0;bottom:0;left:0}.ctabs-head-right-wrapper{position:absolute;top:0;bottom:0;right:0}.ctabs-head-center-wrapper{position:absolute;top:6px;bottom:0}
 .ctabs-head-center{position:relative;height:100%;width:100%;overflow:hidden}.ctabs-head-center-flex{display:-webkit-box;display:-moz-box;display:box}.ctabs-head-center-fix{white-space:nowrap}
 .ctabs-adder{position:relative;display:inline-block;margin-left:20px}.ctabs-adder:first-child{margin-left:0}.ctabs-ctab{position:relative;display:block;height:22px;margin-right:-20px;box-shadow:inset 0 0 1px black}

@@ -6,7 +6,6 @@
  * Dual licensed under the MIT or GPL Version 3 licenses.
  * http://www.opensource.org/licenses/mit-license
  * http://www.opensource.org/licenses/GPL-3.0
- *
  */
 
 (function($) {
@@ -389,7 +388,7 @@
             }, this._settings.resizeCacheDelay);
         },
 
-        _stopSort: function(event, ui) {
+        _stopSort: function() {
             // reorder the hashes
             this.hashes = $.map(this._nodes.headCenter.children(".ctabs-ctab"), function(ctab) {
                 return $(ctab).attr("hash");
