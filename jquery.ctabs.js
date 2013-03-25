@@ -435,7 +435,7 @@
         _applyMarker: function(value) {
             var that = this;
             $.each(this.store, function(hash) {
-                that.mark(hash);
+                that.mark(hash, undefined, value);
             });
             return true;
         },
@@ -605,16 +605,15 @@
             return !!this.store[hash].marker.html();
         },
 
-        mark: function(hash, modified) {
+        mark: function(hash, modified, marker) {
             hash = this._getHash(hash);
             if (!this.store[hash]) {
                 return;
             }
-            var marker = this.store[hash].marker;
             if (modified === undefined) {
                 modified = this.modified(hash);
             }
-            this.store[hash].marker.html(modified ? this.options.marker : '');
+            this.store[hash].marker.html(modified ? (marker || this.options.marker) : '');
         },
 
         resize: function() {
