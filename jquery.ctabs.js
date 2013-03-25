@@ -23,6 +23,8 @@
             headRightWidth: 0,
             height: "100%",
             icon: "span",
+            marker: "*",
+            showHash: true,
             tabHeight: 25,
             useFlex: true,
             width: "100%"
@@ -31,6 +33,8 @@
         workflow: {
             currentHash: null
         },
+
+        // --- widget methods ---
 
         _create: function() {
             this._prepare();
@@ -44,8 +48,6 @@
         },
 
         _setOption: function(key, value) {
-            this._super(key, value);
-
             switch (key) {
                 case "active":
                     if (!this._applyActive(value)) {
@@ -76,11 +78,19 @@
                 case "icon":
                     // singular option
                     break;
+                case "marker":
+                    // TODO
+                    break;
+                case "showHash":
+                    // dynamic
+                    break;
                 case "tabHeight":
                     // TODO
                     break;
                 case "useFlex":
-                    this._applyMode();
+                    if (!this._applyUseFlex(value) {
+                        return;
+                    }
                     break;
                 case "width":
                     // TODO
@@ -88,7 +98,16 @@
                 default:
                     break;
             }
+
+            this._super(key, value);
         },
+
+        _refresh: function() {
+            this._applyActive(this.options.active);
+            this._applyUseFlex(this.options.useFlex);
+        },
+
+        // --- private methods ---
 
         _prepare: function() {
             var that = this;
@@ -178,13 +197,14 @@
         },
 
         _initTarget: function() {
+            // TODO: overthink this method
             this.nodes.headLeft.css("width", this.options.headLeftWidth);
             this.nodes.headRight.css("width", this.options.headRightWidth);
             this.nodes.outerHeadCenter.css({
                 left: this.options.headLeftWidth,
                 right: this.options.headRightWidth
             });
-            this._applyMode();
+            this._applyUseFlex(this.options.useFlex);
         },
 
         _fillTarget: function() {
@@ -249,7 +269,9 @@
                 .empty()
                 .appendTo(center)
                 .click(function(event) {
-                    event.preventDefault();
+                    if (!that.options.showHash) {
+                        event.preventDefault();
+                    }
                     that.select(hash);
                 });
             var outerTitle = $("<div>")
@@ -266,23 +288,11 @@
             this.ctabs = this.ctabs.add(ctab);
         },
 
-        _applyMode: function() {
-            this.nodes.headCenter.toggleClass("ctabs-head-center-flex", this.options.useFlex);
-            this.ctabs.toggleClass("ctabs-ctab-flex", this.options.useFlex);
-            this.nodes.headCenter.toggleClass("ctabs-head-center-fix", !this.options.useFlex);
-            this.ctabs.toggleClass("ctabs-ctab-fix", !this.options.useFlex);
+        _resize: function() {
+            // TODO
         },
 
-        _applyActive: function(value) {
-            var ctab = this.nodes.headCenter.children(".ctabs-ctab").eq(value);
-            if (ctab) {
-                this.select(ctab.attr("hash"));
-                return true;
-            }
-            return false;
-        },
-
-        _setActiveOption: function() {
+        _updateActive: function() {
             var that = this;
             var hash = this.workflow.currentHash;
             if (!hash) {
@@ -295,6 +305,26 @@
                 }
             });
         },
+
+        _applyActive: function(value) {
+            var ctab = this.nodes.headCenter.children(".ctabs-ctab").eq(value);
+            if (ctab) {
+                this.select(ctab.attr("hash"));
+                return true;
+            }
+            return false;
+        },
+
+        _applyUseFlex: function(value) {
+            this.nodes.headCenter.toggleClass("ctabs-head-center-flex", value);
+            this.ctabs.toggleClass("ctabs-ctab-flex", value);
+            this.nodes.headCenter.toggleClass("ctabs-head-center-fix", !value);
+            this.ctabs.toggleClass("ctabs-ctab-fix", !value);
+            return true;
+        },
+
+
+        // --- public methods ---
 
         add: function(hash, data) {
             if (this.store[hash]) {
@@ -327,7 +357,7 @@
                 panel: panel
             };
             this._createCTab(hash);
-            this._applyMode();
+            this._applyUseFlex(this.options.useFlex);
             return this.store[hash];
         },
 
@@ -343,6 +373,10 @@
             delete this.store[hash];
         },
 
+        get: function(hash) {
+            return this.store[hash];
+        },
+
         select: function(hash) {
             var that = this;
             if (!this.store[hash]) {
@@ -352,7 +386,7 @@
             this.store[hash].ctab.toggleClass("ctabs-ctab-active", true);
             this.store[hash].panel.show();
             this.workflow.currentHash = hash;
-            this._setActiveOption();
+            this._updateActive();
         },
 
         deselect: function() {
@@ -395,10 +429,9 @@
         mark: function(hash, modified) {
             modified = modified === undefined ? true : modified;
             var title = this.title(hash);
-            console.log(title);
-            if (modified && title[0] != "*") {
-                this.title(hash, "*" + title);
-            } else if (!modified && title[0] == "*") {
+            if (modified && title[0] != this.options.marker) {
+                this.title(hash, this.options.marker + title);
+            } else if (!modified && title[0] == this.options.marker) {
                 this.title(hash, title.substr(1));
             }
         },
@@ -407,7 +440,7 @@
             if (this.options.useFlex) {
                 return;
             }
-            console.log("TODO: resize");
+            this._resize();
         }
     });
 
