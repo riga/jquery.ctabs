@@ -85,6 +85,10 @@
 .ctabs-ctab-fix {
     display: inline-block;
 }
+.ctabs-ctab-fix-placeholder {
+    position: relative;
+    display: inline-block;
+}
 
 .ctabs-ctab-center {
     position: relative;

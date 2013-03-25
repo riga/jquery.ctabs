@@ -15,7 +15,7 @@
         version: "0.1",
         options: {
             active: 0,
-            add: function(){},
+            add: null,
             cssFlex: true,
             headLeft: "",
             headLeftWidth: 0,
@@ -23,17 +23,22 @@
             headRightWidth: 0,
             height: "100%",
             icon: "span",
+            iconFormatter: null,
             marker: "*",
-            showHash: true,
+            showHash: false,
             width: "100%"
         },
 
-        _layout: {
-            overlap: 20
+        _settings: {
+            overlap: 20,
+            resizeCacheDelay: 500
         },
 
         _workflow: {
-            currentHash: null
+            currentHash: null,
+            resizeTimeout: null,
+            minTabWidth: null,
+            maxTabWidth: null
         },
 
         // --- widget methods ---
@@ -42,7 +47,6 @@
             this._prepare();
             this._setupTarget();
             this._initialFill();
-            this._refresh();
         },
 
         _setOption: function(key, value) {
@@ -57,7 +61,7 @@
                     // dynamic
                     break;
                 case "cssFlex":
-                    // singular option
+                    // singular
                     return;
                     break;
                 case "headLeft":
@@ -86,8 +90,11 @@
                     }
                     break;
                 case "icon":
-                    // singular option
+                    // singular
                     return;
+                    break;
+                case "iconFormatter":
+                    // dynamic
                     break;
                 case "marker":
                     if (!this._applyMarker(value)) {
@@ -136,9 +143,9 @@
 
         _prepare: function() {
             // collect data
-            var that = this,
-                tabList = this.element.find("ol, ul").first().hide(),
-                tabs = tabList.children();
+            var that = this;
+            var tabList = this.element.find("ol, ul").first().hide();
+            var tabs = tabList.children();
             // global storage and a list to keep track of the order
             this.store = {};
             this.hashes = [];
@@ -204,11 +211,19 @@
                 .html("+")
                 .appendTo(headCenter)
                 .click(function() {
-                    that.options.add();
+                    if ($.isFunction(that.options.add)) {
+                        that.options.add.apply(null, arguments);
+                    }
                 });
 
             // make the tabs sortable using jQuery UI's sortable widget
-            $(headCenter).sortable({
+            var sortableOptions = this.options.cssFlex ? {} : {
+                placeholder: "ctabs-ctab-fix-placeholder",
+                start: function(event, ui) {
+                    ui.placeholder.css("width", ui.item.width() - that._settings.overlap);
+                }
+            };
+            $(headCenter).sortable($.extend({
                 axis: "x",
                 distance: 20,
                 tolerance: "pointer",
@@ -216,7 +231,7 @@
                 stop: function(event, ui) {
                     that._sortStop();
                 }
-            }).disableSelection();
+            }), sortableOptions).disableSelection();
 
             // store some nodes
             this.nodes = {
@@ -237,6 +252,7 @@
             $.each(this.store, function(hash) {
                 that._createCTab(hash, undefined);
             });
+            this._refresh();
             this.select(this.options.active);
         },
 
@@ -338,33 +354,42 @@
                 return;
             }
             // calculate layout values
-            var children      = this.nodes.headCenter.children(".ctabs-ctab"),
-                firstChild    = children.first(),
-                nChildren     = parseFloat(children.size()),
-                currentWidth  = children.first().width(),
-                outerWidth    = this.nodes.headCenter.width(),
-                adderWidth    = this.nodes.adder.width(),
-                maxTabWidth   = parseInt(firstChild.css('max-width')),
-                minTabWidth   = parseInt(firstChild.css('min-width')),
-                innerWidth    = adderWidth + nChildren * currentWidth - (nChildren - 1) * this._layout.overlap,
-                maxInnerWidth = adderWidth + nChildren * maxTabWidth - (nChildren - 1) * this._layout.overlap,
-                minInnerWidth = adderWidth + nChildren * minTabWidth - (nChildren - 1) * this._layout.overlap,
-                targetWidth   = currentWidth;
+            var wf              = this._workflow;
+            var children        = this.nodes.headCenter.children(".ctabs-ctab");
+            var firstChild      = children.first();
+            var nChildren       = parseFloat(children.size());
+            wf.minTabWidth      = wf.minTabWidth || parseInt(firstChild.css('min-width'));
+            wf.maxTabWidth      = wf.maxTabWidth || parseInt(firstChild.css('max-width'));
+            var currentTabWidth = firstChild.width();
+            var outerWidth      = this.nodes.headCenter.width();
+            var adderWidth      = this.nodes.adder.width();
+            var innerWidth      = adderWidth + nChildren * currentTabWidth - (nChildren - 1) * this._settings.overlap;
+            var maxInnerWidth   = adderWidth + nChildren * wf.maxTabWidth - (nChildren - 1) * this._settings.overlap;
+            var minInnerWidth   = adderWidth + nChildren * wf.minTabWidth - (nChildren - 1) * this._settings.overlap;
+            var targetWidth     = currentTabWidth;
+
             // determine the new width of the ctabs
             if (outerWidth >= maxInnerWidth) {
                 // the element is big enough, no need to shrink, use the maximum width
-                targetWidth = maxTabWidth;
+                targetWidth = wf.maxTabWidth;
             } else if (outerWidth <= minInnerWidth) {
                 // the element is too small, all ctabs are their minimum, use the minimum width
-                targetWidth = minTabWidth;
+                targetWidth = wf.minTabWidth;
             } else {
                 // the ctab widths need to be scaled, revert the inner width calculation to obtain the new ctab width
-                targetWidth = (outerWidth - adderWidth + (nChildren - 1) * this._layout.overlap) / nChildren;
+                targetWidth = (outerWidth - adderWidth + (nChildren - 1) * this._settings.overlap) / nChildren;
             }
             // only apply the new width, when it differs from the old one
-            if (targetWidth != currentWidth) {
+            if (targetWidth != currentTabWidth) {
                 children.width(targetWidth);
             }
+            // try to clear chached variables after a delay
+            window.clearTimeout(wf.resizeTimeout);
+            wf.resizeTimeout = window.setTimeout(function() {
+                wf.minTabWidth = null;
+                wf.maxTabWidth = null;
+
+            }, this._settings.resizeCacheDelay);
         },
 
         _sortStop: function() {
@@ -449,13 +474,13 @@
 
             // create the structure based on the markup scheme
             // in order to simply call _createCTab
-            var tabList = this.element.find("ol, ul").first(),
-                tab = $("<li>").appendTo(tabList),
-                anchor = $("<a>")
+            var tabList = this.element.find("ol, ul").first();
+            var tab = $("<li>").appendTo(tabList);
+            var anchor = $("<a>")
                     .attr("href", hash)
                     .append(data.title)
-                    .appendTo(tab),
-                panel;
+                    .appendTo(tab);
+            var panel;
             if (typeof(data.content) == "string") {
                 panel = $("<div>").append(data.content);
             } else {
@@ -560,9 +585,16 @@
             if (!icon) {
                 return this.store[hash].icon;
             }
-            this.store[hash].icon.remove();
+            if ($.isFunction(this.options.iconFormatter)) {
+                icon = this.options.iconFormatter(hash, this.store[hash].icon, icon);
+                if (!icon) {
+                    return;
+                }
+            }
             this.store[hash].icon = icon;
-            this.store[hash].iconWrapper.append(icon);
+            this.store[hash].iconWrapper
+                .empty()
+                .append(icon);
         },
 
         modified: function(hash) {
