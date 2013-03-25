@@ -16,7 +16,7 @@
         options: {
             active: 0,
             add: function(){},
-            cssFlex: false,
+            cssFlex: true,
             headLeft: "",
             headLeftWidth: 0,
             headRight: "",
@@ -210,13 +210,13 @@
             // make the tabs sortable using jQuery UI's sortable widget
             $(headCenter).sortable({
                 axis: "x",
-                tolerance: "pointer",
                 distance: 20,
+                tolerance: "pointer",
                 items: ".ctabs-ctab",
                 stop: function(event, ui) {
                     that._sortStop();
                 }
-            });
+            }).disableSelection();
 
             // store some nodes
             this.nodes = {
