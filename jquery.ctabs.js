@@ -576,7 +576,6 @@
             this.store[hash].title.html(title);
         },
 
-        // TODO
         icon: function(hash, icon) {
             hash = this._getHash(hash);
             if (!this.store[hash]) {
