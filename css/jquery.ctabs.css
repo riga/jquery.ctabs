@@ -70,6 +70,8 @@
     position: relative;
     display: block;
     height: 22px;
+    min-width: 20px;
+    max-width: 180px;
     margin-right: -20px;
     box-shadow: inset 0px 0px 1px black;
 }
@@ -78,8 +80,6 @@
     background-color: blue;
 }
 .ctabs-ctab-flex {
-    min-width: 20px;
-    max-width: 180px;
     box-flex: 1;
     -webkit-box-flex: 1;
     -moz-box-flex: 1;

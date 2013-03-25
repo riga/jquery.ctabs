@@ -24,6 +24,8 @@
             height: "100%",
             icon: "span",
             marker: "*",
+            maxTabWidth: 180,
+            minTabWidth: 20,
             showHash: true,
             tabHeight: 25,
             useFlex: true,
@@ -81,6 +83,12 @@
                 case "marker":
                     // TODO
                     break;
+                case "maxTabWidth":
+                    // TODO
+                    break;
+                case "minTabWidth":
+                    // TODO
+                    break;
                 case "showHash":
                     // dynamic
                     break;
@@ -88,7 +96,7 @@
                     // TODO
                     break;
                 case "useFlex":
-                    if (!this._applyUseFlex(value) {
+                    if (!this._applyUseFlex(value)) {
                         return;
                     }
                     break;
@@ -191,7 +199,7 @@
                 distance: 20,
                 items: ".ctabs-ctab",
                 stop: function(event, ui) {
-                    that._setActiveOption();
+                    that._updateActive();
                 }
             });
         },
