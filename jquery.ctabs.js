@@ -205,13 +205,19 @@
             // adder
             var adder = $("<div>")
                 .addClass("ctabs-adder")
-                .html("+")
                 .appendTo(headCenter)
                 .click(function() {
                     if ($.isFunction(that.options.add)) {
                         that.options.add.apply(null, arguments);
                     }
                 });
+            var adderTable = $("<div>")
+                .addClass("ctabs-table")
+                .appendTo(adder);
+            var adderTableCell = $("<div>")
+                .addClass("ctabs-table-cell-center")
+                .appendTo(adderTable);
+            $("<span>").html("+").appendTo(adderTableCell);
 
             // make the tabs sortable using jQuery UI's sortable widget
             var sortableOptions = this.options.cssFlex ? {} : {
@@ -223,6 +229,7 @@
             $(headCenter).sortable($.extend({
                 axis: "x",
                 distance: 20,
+                cursor: "move",
                 tolerance: "pointer",
                 items: ".ctabs-ctab",
                 stop: function(event, ui) {
@@ -265,7 +272,11 @@
                 .addClass("ctabs-ctab ctabs-ctab-dimensions")
                 .addClass(this.options.cssFlex ? "ctabs-ctab-flex" : "ctabs-ctab-fix")
                 .attr("hash", hash)
-                .insertBefore(this._nodes.adder);
+                .insertBefore(this._nodes.adder)
+                .click(function(event) {
+                    event.stopPropagation();
+                    that.select(hash);
+                });
             // ctab left
             var ctabLeft = $("<div>")
                 .addClass("ctabs-ctab-left-wrapper")
@@ -306,32 +317,34 @@
                 .addClass("ctabs-table-cell-right")
                 .append("x")
                 .appendTo(closeBox)
-                .click(function() {
+                .click(function(event) {
+                    event.stopPropagation();
                     that.remove(hash);
                 });
-            // title
-            var text = this.store[hash].anchor.html();
-            this.store[hash].anchor
+            // prepare the anchor
+            var anchor = this.store[hash].anchor;
+            var text = anchor.html();
+            anchor
                 .empty()
-                .appendTo(ctabCenter)
                 .click(function(event) {
-                    if (!that.options.showHash) {
-                        event.preventDefault();
-                    }
+                    event.preventDefault();
+                    event.stopPropagation();
                     that.select(hash);
                 });
+            // title
             var titleBoxWrapper = $("<div>")
                 .addClass("ctabs-ctab-title-wrapper")
-                .appendTo(this.store[hash].anchor);
+                .appendTo(ctabCenter);
             var titleBox = $("<div>")
                 .addClass("ctabs-table")
                 .appendTo(titleBoxWrapper);
             var titleWrapper = $("<div>")
-                .addClass("ctabs-table-cell")
+                .addClass("ctabs-table-cell-left")
+                .append(anchor)
                 .appendTo(titleBox);
             var title = $("<span>")
                 .html(text)
-                .appendTo(titleWrapper);
+                .appendTo(anchor);
             // marker
             this.store[hash].marker = $("<span>").insertBefore(title);
 
@@ -570,6 +583,10 @@
             // update values
             this._workflow.currentHash = hash;
             this._updateActive();
+            // set the hash
+            if (this.options.showHash) {
+                window.location.hash = hash;
+            }
             // fire afterSelect
             if ($.isFunction(this.options.afterSelect)) {
                 this.options.afterSelect(hash);

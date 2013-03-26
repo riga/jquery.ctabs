@@ -44,8 +44,8 @@
 
 .ctabs-head-center-wrapper {
     position: absolute;
-    top: 5px;
     bottom: 0px;
+    height: 25px;
 }
 
 .ctabs-head-center {
@@ -55,9 +55,9 @@
     overflow: hidden;
 }
 .ctabs-head-center-flex {
+    display: box;
     display: -webkit-box;
     display: -moz-box;
-    display: box;
 }
 .ctabs-head-center-fix {
     white-space: nowrap;
@@ -65,6 +65,7 @@
 
 .ctabs-adder {
     position: relative;
+    height: 100%;
     display: inline-block;
     margin-left: 20px;
 }
@@ -74,18 +75,9 @@
 
 .ctabs-ctab {
     position: relative;
-    display: block;
     height: 100%;
     margin-right: -20px;
     box-shadow: inset 0px 0px 1px black;
-}
-.ctabs-ctab-dimensions {
-    min-width: 80px;
-    max-width: 180px;
-}
-.ctabs-ctab-active {
-    z-index: 1001;
-    background-color: blue;
 }
 .ctabs-ctab-flex {
     box-flex: 1;
@@ -95,16 +87,28 @@
 .ctabs-ctab-fix {
     display: inline-block;
 }
+
+.ctabs-ctab-dimensions {
+    min-width: 80px;
+    max-width: 180px;
+}
+
+.ctabs-ctab-active {
+    z-index: 1001;
+    background-color: blue;
+}
+
 .ctabs-ctab-fix-placeholder {
     position: relative;
     display: inline-block;
 }
 
 .ctabs-ctab-center {
-    position: relative;
-    display: block;
-    height: 100%;
-    margin: 0px 20px;
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    bottom: 0px;
+    left: 20px;
 }
 
 .ctabs-ctab-left-wrapper {
