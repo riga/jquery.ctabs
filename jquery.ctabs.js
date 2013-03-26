@@ -272,19 +272,19 @@
                     that.select(hash);
                 });
             // ctab left
-            var ctabLeft = $("<div>")
+            var ctabLeftWrapper = $("<div>")
                 .addClass("ctabs-ctab-left-wrapper")
                 .appendTo(ctab);
-            $("<div>")
+            var ctabLeft = $("<div>")
                 .addClass("ctabs-ctab-left")
-                .appendTo(ctabLeft);
+                .appendTo(ctabLeftWrapper);
             // ctab right
-            var ctabRight = $("<div>")
+            var ctabRightWrapper = $("<div>")
                 .addClass("ctabs-ctab-right-wrapper")
                 .appendTo(ctab);
-            $("<div>")
+            var ctabRight = $("<div>")
                 .addClass("ctabs-ctab-right")
-                .appendTo(ctabRight);
+                .appendTo(ctabRightWrapper);
             // ctab center
             var ctabCenter = $("<div>")
                 .addClass("ctabs-ctab-center")
@@ -345,6 +345,9 @@
             // store some nodes
             $.extend(this.store[hash], {
                 ctab: ctab,
+                ctabCenter: ctabCenter,
+                ctabLeft: ctabLeft,
+                ctabRight: ctabRight,
                 iconWrapper: iconWrapper,
                 close: close,
                 title: title
@@ -572,9 +575,13 @@
                     return false;
                 }
             }
-            // show the panel and add the ctab's active class
+            // show the panel
             this.store[hash].panel.show();
+            // toggle the active classes
             this.store[hash].ctab.toggleClass("ctabs-ctab-active", true);
+            this.store[hash].ctabCenter.toggleClass("ctabs-ctab-center-active", true);
+            this.store[hash].ctabLeft.toggleClass("ctabs-ctab-left-active", true);
+            this.store[hash].ctabRight.toggleClass("ctabs-ctab-right-active", true);
             // update values
             this._workflow.currentHash = hash;
             this._updateActive();
@@ -603,9 +610,14 @@
                     return false;
                 }
             }
-            // hide the panel and remove the ctab's active class
-            this.store[this._workflow.currentHash].panel.hide();
-            this.store[this._workflow.currentHash].ctab.toggleClass("ctabs-ctab-active", false);
+            hash = this._workflow.currentHash;
+            // hide the panel
+            this.store[hash].panel.hide();
+            // remove the active classes
+            this.store[hash].ctab.toggleClass("ctabs-ctab-active", false);
+            this.store[hash].ctabCenter.toggleClass("ctabs-ctab-center-active", false);
+            this.store[hash].ctabLeft.toggleClass("ctabs-ctab-left-active", false);
+            this.store[hash].ctabRight.toggleClass("ctabs-ctab-right-active", false);
             // update values
             this._workflow.currentHash = null;
             this._updateActive();

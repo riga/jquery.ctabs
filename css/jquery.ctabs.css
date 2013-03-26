@@ -90,7 +90,6 @@
 }
 .ctabs-ctab-active {
   z-index: 1001;
-  background-color: blue;
 }
 .ctabs-ctab-fix-placeholder {
   position: relative;
@@ -102,6 +101,14 @@
   right: 20px;
   bottom: 0px;
   left: 20px;
+  background-image: url(/css/img/tabsprite1.png);
+  background-position: 0px -50px;
+  background-repeat: repeat-x;
+}
+.ctabs-ctab-center-active {
+  background-image: url(/css/img/activetabsprite1.png);
+  background-position: 0px -50px;
+  background-repeat: repeat-x;
 }
 .ctabs-ctab-left-wrapper {
   position: absolute;
@@ -110,7 +117,21 @@
   bottom: 0px;
   left: 0px;
   width: 20px;
-  background-color: red;
+}
+.ctabs-ctab-left {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-image: url(/css/img/tabsprite1.png);
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+}
+.ctabs-ctab-left-active {
+  background-image: url(/css/img/activetabsprite1.png);
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
 }
 .ctabs-ctab-right-wrapper {
   position: absolute;
@@ -119,14 +140,6 @@
   bottom: 0px;
   left: none;
   width: 20px;
-  background-color: green;
-}
-.ctabs-ctab-left {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
 }
 .ctabs-ctab-right {
   position: absolute;
@@ -134,6 +147,14 @@
   right: 0px;
   bottom: 0px;
   left: 0px;
+  background-image: url(/css/img/tabsprite1.png);
+  background-position: 0px -25px;
+  background-repeat: no-repeat;
+}
+.ctabs-ctab-right-active {
+  background-image: url(/css/img/activetabsprite1.png);
+  background-position: 0px -25px;
+  background-repeat: no-repeat;
 }
 .ctabs-ctab-title-wrapper {
   position: absolute;

@@ -14,6 +14,8 @@
 @tabMinWidth: 80px;
 @tabMaxWidth: 180px;
 @overlap: 20px;
+@tabSprite: url(/css/img/tabsprite1.png);
+@activeTabSprite: url(/css/img/activetabsprite1.png);
 @nonePx: none;
 @nonePc: none;
 
@@ -44,6 +46,13 @@
     vertical-align: @vertical-align;
     text-align: @text-align;
 }
+
+.ctabs-background-image (@url, @position: 0px 0px, @repeat: no-repeat) {
+    background-image: @url;
+    background-position: @position;
+    background-repeat: @repeat;
+}
+
 
 // --- styles ---
 .ctabs-head {
@@ -112,7 +121,6 @@
 
 .ctabs-ctab-active {
     z-index: 1001;
-    background-color: blue;
 }
 
 .ctabs-ctab-fix-placeholder {
@@ -122,28 +130,36 @@
 
 .ctabs-ctab-center {
     .ctabs-absolute(@right: @overlap, @left: @overlap);
+    .ctabs-background-image(@tabSprite, @position: 0px -(@tabHeight * 2), @repeat: repeat-x);
+}
+.ctabs-ctab-center-active {
+    .ctabs-background-image(@activeTabSprite, @position: 0px -(@tabHeight * 2), @repeat: repeat-x);
 }
 
 .ctabs-ctab-left-wrapper {
     .ctabs-absolute(@right: @nonePx);
     width: @overlap;
+}
 
-    background-color: red;
+.ctabs-ctab-left {
+    .ctabs-absolute();
+    .ctabs-background-image(@tabSprite, @position: 0px 0px);
+}
+.ctabs-ctab-left-active {
+    .ctabs-background-image(@activeTabSprite, @position: 0px 0px);
 }
 
 .ctabs-ctab-right-wrapper {
     .ctabs-absolute(@left: @nonePx);
     width: @overlap;
-
-    background-color: green;
-}
-
-.ctabs-ctab-left {
-    .ctabs-absolute();
 }
 
 .ctabs-ctab-right {
     .ctabs-absolute();
+    .ctabs-background-image(@tabSprite, @position: 0px -@tabHeight);
+}
+.ctabs-ctab-right-active {
+    .ctabs-background-image(@activeTabSprite, @position: 0px -@tabHeight);
 }
 
 .ctabs-ctab-title-wrapper {
