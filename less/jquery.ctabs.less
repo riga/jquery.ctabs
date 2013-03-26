@@ -1,0 +1,179 @@
+/*!
+ * jQuery Chrome Tabs Plugin v0.1
+ * https://github.com/riga/jquery.ctabs
+ *
+ * Copyright 2012, Marcel Rieger
+ * Dual licensed under the MIT or GPL Version 3 licenses.
+ * http://www.opensource.org/licenses/mit-license
+ * http://www.opensource.org/licenses/GPL-3.0
+ */
+
+// --- variables ---
+@headHeight: 30px;
+@tabHeight: 25px;
+@nonePx: none;
+@nonePc: none;
+
+// --- mixins ---
+.ctabs-absolute (@top: 0px, @right: 0px, @bottom: 0px, @left: 0px) {
+    position: absolute;
+    top: @top;
+    right: @right;
+    bottom: @bottom;
+    left: @left;
+}
+
+.ctabs-relative (@height: 100%, @width: 100%) {
+    position: relative;
+    height: @height;
+    width: @width;
+}
+
+.ctabs-table (@height: 100%, @width: 100%) {
+    display: table;
+    height: @height;
+    width: @width;
+}
+
+.ctabs-table-cell (@vertical-align: middle, @text-align: left) {
+    display: table-cell;
+    vertical-align: @vertical-align;
+    text-align: @text-align;
+}
+
+// --- styles ---
+.ctabs-head {
+    .ctabs-absolute(@bottom: @nonePx);
+    height: @headHeight;
+    overflow: hidden;
+
+    background-color: lightgrey;
+}
+
+.ctabs-body {
+    .ctabs-absolute(@headHeight);
+    overflow: hidden;
+}
+
+.ctabs-head-left-wrapper {
+    .ctabs-absolute(@right: @nonePx);
+}
+
+.ctabs-head-right-wrapper {
+    .ctabs-absolute(@left: @nonePx);
+}
+
+.ctabs-head-center-wrapper {
+    .ctabs-absolute(@nonePx, @nonePx, 0px, @nonePx);
+    height: @tabHeight;
+}
+
+.ctabs-head-center {
+    .ctabs-relative();
+    overflow: hidden;
+}
+.ctabs-head-center-flex {
+    display: box;
+    display: -webkit-box;
+    display: -moz-box;
+}
+.ctabs-head-center-fix {
+    white-space: nowrap;
+}
+
+.ctabs-adder {
+    .ctabs-relative(@width: @nonePc);
+    display: inline-block;
+    margin-left: 20px;
+}
+.ctabs-adder:first-child {
+    margin-left: 0px;
+}
+
+.ctabs-ctab {
+    .ctabs-relative(@width: @nonePc);
+    margin-right: -20px;
+    box-shadow: inset 0px 0px 1px black;
+}
+.ctabs-ctab-flex {
+    box-flex: 1;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+}
+.ctabs-ctab-fix {
+    display: inline-block;
+}
+
+.ctabs-ctab-dimensions {
+    min-width: 80px;
+    max-width: 180px;
+}
+
+.ctabs-ctab-active {
+    z-index: 1001;
+    background-color: blue;
+}
+
+.ctabs-ctab-fix-placeholder {
+    position: relative;
+    display: inline-block;
+}
+
+.ctabs-ctab-center {
+    .ctabs-absolute(@right: 20px, @left: 20px);
+}
+
+.ctabs-ctab-left-wrapper {
+    .ctabs-absolute(@right: @nonePx);
+    width: 20px;
+
+    background-color: red;
+}
+
+.ctabs-ctab-right-wrapper {
+    .ctabs-absolute(@left: @nonePx);
+    width: 20px;
+
+    background-color: green;
+}
+
+.ctabs-ctab-left {
+    .ctabs-absolute();
+}
+
+.ctabs-ctab-right {
+    .ctabs-absolute();
+}
+
+.ctabs-ctab-title-wrapper {
+    .ctabs-absolute(@right: 20px, @left: 16px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ctabs-ctab-icon-wrapper {
+    .ctabs-absolute(@right: @nonePx);
+    width: 16px;
+}
+
+.ctabs-ctab-close-wrapper {
+    .ctabs-absolute(@left: @nonePx);
+    width: 20px;
+}
+
+.ctabs-head-table {
+    .ctabs-table(@tabHeight);
+}
+
+.ctabs-table-cell-center {
+    .ctabs-table-cell(@text-align: center);
+}
+
+.ctabs-table-cell-left {
+    .ctabs-table-cell();
+}
+
+.ctabs-table-cell-right {
+    .ctabs-table-cell(@text-align: right);
+}

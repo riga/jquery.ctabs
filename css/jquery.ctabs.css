@@ -7,198 +7,179 @@
  * http://www.opensource.org/licenses/mit-license
  * http://www.opensource.org/licenses/GPL-3.0
  */
-
 .ctabs-head {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    left: 0px;
-    height: 30px;
-    overflow: hidden;
-
-    background-color: lightgrey;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: none;
+  left: 0px;
+  height: 30px;
+  overflow: hidden;
+  background-color: lightgrey;
 }
-
 .ctabs-body {
-    position: absolute;
-    top: 30px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    overflow: hidden;
+  position: absolute;
+  top: 30px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  overflow: hidden;
 }
-
 .ctabs-head-left-wrapper {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
+  position: absolute;
+  top: 0px;
+  right: none;
+  bottom: 0px;
+  left: 0px;
 }
-
 .ctabs-head-right-wrapper {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: none;
 }
-
 .ctabs-head-center-wrapper {
-    position: absolute;
-    bottom: 0px;
-    height: 25px;
+  position: absolute;
+  top: none;
+  right: none;
+  bottom: 0px;
+  left: none;
+  height: 25px;
 }
-
 .ctabs-head-center {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 .ctabs-head-center-flex {
-    display: box;
-    display: -webkit-box;
-    display: -moz-box;
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
 }
 .ctabs-head-center-fix {
-    white-space: nowrap;
+  white-space: nowrap;
 }
-
 .ctabs-adder {
-    position: relative;
-    height: 100%;
-    display: inline-block;
-    margin-left: 20px;
+  position: relative;
+  height: 100%;
+  width: none;
+  display: inline-block;
+  margin-left: 20px;
 }
 .ctabs-adder:first-child {
-    margin-left: 0px;
+  margin-left: 0px;
 }
-
 .ctabs-ctab {
-    position: relative;
-    height: 100%;
-    margin-right: -20px;
-    box-shadow: inset 0px 0px 1px black;
+  position: relative;
+  height: 100%;
+  width: none;
+  margin-right: -20px;
+  box-shadow: inset 0px 0px 1px black;
 }
 .ctabs-ctab-flex {
-    box-flex: 1;
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
 }
 .ctabs-ctab-fix {
-    display: inline-block;
+  display: inline-block;
 }
-
 .ctabs-ctab-dimensions {
-    min-width: 80px;
-    max-width: 180px;
+  min-width: 80px;
+  max-width: 180px;
 }
-
 .ctabs-ctab-active {
-    z-index: 1001;
-    background-color: blue;
+  z-index: 1001;
+  background-color: blue;
 }
-
 .ctabs-ctab-fix-placeholder {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
-
 .ctabs-ctab-center {
-    position: absolute;
-    top: 0px;
-    right: 20px;
-    bottom: 0px;
-    left: 20px;
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  bottom: 0px;
+  left: 20px;
 }
-
 .ctabs-ctab-left-wrapper {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    width: 20px;
-
-    background-color: red;
+  position: absolute;
+  top: 0px;
+  right: none;
+  bottom: 0px;
+  left: 0px;
+  width: 20px;
+  background-color: red;
 }
-
 .ctabs-ctab-right-wrapper {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    width: 20px;
-
-    background-color: green;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: none;
+  width: 20px;
+  background-color: green;
 }
-
 .ctabs-ctab-left {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
 }
-
 .ctabs-ctab-right {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
 }
-
 .ctabs-ctab-title-wrapper {
-    position: absolute;
-    top: 0px;
-    right: 20px;
-    bottom: 0px;
-    left: 16px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  bottom: 0px;
+  left: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
 .ctabs-ctab-icon-wrapper {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    width: 16px;
+  position: absolute;
+  top: 0px;
+  right: none;
+  bottom: 0px;
+  left: 0px;
+  width: 16px;
 }
-
 .ctabs-ctab-close-wrapper {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    width: 20px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: none;
+  width: 20px;
 }
-
-.ctabs-table {
-    display: table;
-    height: 100%;
-    width: 100%;
+.ctabs-head-table {
+  display: table;
+  height: 25px;
+  width: 100%;
 }
-
-.ctabs-table-cell {
-    display: table-cell;
-    vertical-align: middle;
-}
-
 .ctabs-table-cell-center {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
-
 .ctabs-table-cell-left {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: left;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: left;
 }
-
 .ctabs-table-cell-right {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: right;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: right;
 }

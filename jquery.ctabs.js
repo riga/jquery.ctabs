@@ -179,7 +179,7 @@
                 .addClass("ctabs-head-left-wrapper")
                 .appendTo(head);
             var headLeftTable = $("<div>")
-                .addClass("ctabs-table")
+                .addClass("ctabs-head-table")
                 .appendTo(headLeftWrapper);
             var headLeft = $("<div>")
                 .addClass("ctabs-table-cell-center")
@@ -189,7 +189,7 @@
                 .addClass("ctabs-head-right-wrapper")
                 .appendTo(head);
             var headRightTable = $("<div>")
-                .addClass("ctabs-table")
+                .addClass("ctabs-head-table")
                 .appendTo(headRightWrapper);
             var headRight = $("<div>")
                 .addClass("ctabs-table-cell-center")
@@ -212,7 +212,7 @@
                     }
                 });
             var adderTable = $("<div>")
-                .addClass("ctabs-table")
+                .addClass("ctabs-head-table")
                 .appendTo(adder);
             var adderTableCell = $("<div>")
                 .addClass("ctabs-table-cell-center")
@@ -228,8 +228,8 @@
             };
             $(headCenter).sortable($.extend({
                 axis: "x",
-                distance: 20,
                 cursor: "move",
+                distance: 20,
                 tolerance: "pointer",
                 items: ".ctabs-ctab",
                 stop: function(event, ui) {
@@ -300,7 +300,7 @@
                 .addClass("ctabs-ctab-icon-wrapper")
                 .appendTo(ctabCenter);
             var iconBox = $("<div>")
-                .addClass("ctabs-table")
+                .addClass("ctabs-head-table")
                 .appendTo(iconBoxWrapper);
             var iconWrapper = $("<div>")
                 .addClass("ctabs-table-cell-left")
@@ -311,7 +311,7 @@
                 .addClass("ctabs-ctab-close-wrapper")
                 .appendTo(ctabCenter);
             var closeBox = $("<div>")
-                .addClass("ctabs-table")
+                .addClass("ctabs-head-table")
                 .appendTo(closeBoxWrapper);
             var close = $("<div>")
                 .addClass("ctabs-table-cell-right")
@@ -336,7 +336,7 @@
                 .addClass("ctabs-ctab-title-wrapper")
                 .appendTo(ctabCenter);
             var titleBox = $("<div>")
-                .addClass("ctabs-table")
+                .addClass("ctabs-head-table")
                 .appendTo(titleBoxWrapper);
             var titleWrapper = $("<div>")
                 .addClass("ctabs-table-cell-left")
