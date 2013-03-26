@@ -13,12 +13,15 @@
 .ctabs-adder{position:relative;height:100%;width:none;display:inline-block;margin-left:20px}.ctabs-adder:first-child{margin-left:0}.ctabs-ctab{position:relative;height:100%;width:none;margin-right:-20px;min-width:80px;max-width:180px}
 .ctabs-ctab-flex{box-flex:1;-webkit-box-flex:1;-moz-box-flex:1}.ctabs-ctab-fix{display:inline-block}.ctabs-ctab-active{z-index:1001}.ctabs-ctab-fix-placeholder{position:relative;display:inline-block}
 .ctabs-ctab-center{position:absolute;top:0;right:20px;bottom:0;left:20px;background-image:url(/css/img/tabsprite2.png);background-position:0 -50px;background-repeat:repeat-x}
-.ctabs-ctab-center-hover{background-image:url(/css/img/tabsprite2.png);background-position:0 -50px;background-repeat:repeat-x}.ctabs-ctab-center-active{background-image:url(/css/img/activetabsprite2.png);background-position:0 -50px;background-repeat:repeat-x}
-.ctabs-ctab-left-wrapper{position:absolute;top:0;right:none;bottom:0;left:0;width:20px}.ctabs-ctab-left{position:absolute;top:0;right:0;bottom:0;left:0;background-image:url(/css/img/tabsprite2.png);background-position:0 0;background-repeat:no-repeat}
-.ctabs-ctab-left-hover{background-image:url(/css/img/tabsprite2.png);background-position:0 0;background-repeat:no-repeat}.ctabs-ctab-left-active{background-image:url(/css/img/activetabsprite2.png);background-position:0 0;background-repeat:no-repeat}
-.ctabs-ctab-right-wrapper{position:absolute;top:0;right:0;bottom:0;left:none;width:20px}.ctabs-ctab-right{position:absolute;top:0;right:0;bottom:0;left:0;background-image:url(/css/img/tabsprite2.png);background-position:0 -25px;background-repeat:no-repeat}
-.ctabs-ctab-right-hover{background-image:url(/css/img/tabsprite2.png);background-position:0 -25px;background-repeat:no-repeat}.ctabs-ctab-right-active{background-image:url(/css/img/activetabsprite2.png);background-position:0 -25px;background-repeat:no-repeat}
-.ctabs-ctab-title-wrapper{position:absolute;top:0;right:20px;bottom:0;left:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ctabs-ctab-anchor{text-decoration:none;font-family:"Lucida Grande",Helvetica,Arial;font-size:12px}
-.ctabs-ctab-text{color:#d2d2d2;text-shadow:0 1px 1px rgba(0,0,0,0.8)}.ctabs-ctab-text-active{color:#323232;font-weight:bold;text-shadow:0 1px 1px #fff}
-.ctabs-ctab-close-wrapper{position:absolute;top:0;right:0;bottom:0;left:none;width:20px}.ctabs-head-table{display:table;height:25px;width:100%}.ctabs-table-cell-center{display:table-cell;vertical-align:middle;text-align:center}
-.ctabs-table-cell-left{display:table-cell;vertical-align:middle;text-align:left}.ctabs-table-cell-right{display:table-cell;vertical-align:middle;text-align:right}
+.ctabs-ctab-center-active{background-image:url(/css/img/activetabsprite2.png);background-position:0 -50px;background-repeat:repeat-x}.ctabs-ctab-left-wrapper{position:absolute;top:0;right:none;bottom:0;left:0;width:20px}
+.ctabs-ctab-left{position:absolute;top:0;right:0;bottom:0;left:0;background-image:url(/css/img/tabsprite2.png);background-position:0 0;background-repeat:no-repeat}
+.ctabs-ctab-left-active{background-image:url(/css/img/activetabsprite2.png);background-position:0 0;background-repeat:no-repeat}.ctabs-ctab-right-wrapper{position:absolute;top:0;right:0;bottom:0;left:none;width:20px}
+.ctabs-ctab-right{position:absolute;top:0;right:0;bottom:0;left:0;background-image:url(/css/img/tabsprite2.png);background-position:0 -25px;background-repeat:no-repeat}
+.ctabs-ctab-right-active{background-image:url(/css/img/activetabsprite2.png);background-position:0 -25px;background-repeat:no-repeat}.ctabs-ctab-title-wrapper{position:absolute;top:0;right:15px;bottom:0;left:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctabs-ctab-anchor{text-decoration:none;font-family:"Lucida Grande",Helvetica,Arial;font-size:11px}.ctabs-ctab-text{color:#e6e6e6;text-shadow:0 1px 1px rgba(0,0,0,0.8)}
+.ctabs-ctab-text-active{color:#323232;text-shadow:0 1px 1px #fff}.ctabs-ctab-close-wrapper{position:absolute;top:0;right:-5px;bottom:0;left:none;width:20px}
+.ctabs-ctab-close{position:absolute;top:0;right:0;bottom:0;left:0;background-image:url(/css/img/closesprite1.png);background-position:0 0;background-repeat:no-repeat}
+.ctabs-ctab-close:hover{background-image:url(/css/img/closesprite1.png);background-position:0 -25px;background-repeat:no-repeat}.ctabs-ctab-close-active{position:absolute;top:0;right:0;bottom:0;left:0;background-image:url(/css/img/activeclosesprite1.png);background-position:0 0;background-repeat:no-repeat}
+.ctabs-ctab-close-active:hover{background-image:url(/css/img/activeclosesprite1.png);background-position:0 -25px;background-repeat:no-repeat}.ctabs-head-table{display:table;height:25px;width:100%}
+.ctabs-table-cell-center{display:table-cell;vertical-align:middle;text-align:center}.ctabs-table-cell-left{display:table-cell;vertical-align:middle;text-align:left}
+.ctabs-table-cell-right{display:table-cell;vertical-align:middle;text-align:right}

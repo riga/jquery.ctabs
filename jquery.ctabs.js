@@ -296,14 +296,16 @@
             var closeBox = $("<div>")
                 .addClass("ctabs-head-table")
                 .appendTo(closeBoxWrapper);
-            var close = $("<div>")
-                .addClass("ctabs-table-cell-right")
-                .append("x")
-                .appendTo(closeBox)
+            var close = $("<span>")
+                .addClass("ctabs-ctab-close")
                 .click(function(event) {
                     event.stopPropagation();
                     that.remove(hash);
                 });
+            var closeWrapper = $("<div>")
+                .addClass("ctabs-table-cell-center")
+                .append(close)
+                .appendTo(closeBox);
             // prepare the anchor
             var anchor = this.store[hash].anchor.addClass("ctabs-ctab-anchor ctabs-ctab-text");
             var text = anchor.html();
@@ -345,22 +347,6 @@
                 title: title,
                 marker: marker,
                 iconWrapper: iconWrapper
-            });
-
-            // ctab hover event
-            ctab.hover(function() {
-                if (that._workflow.currentHash == hash) {
-                    return;
-                }
-                ctabCenter.toggleClass("ctabs-ctab-center-hover", true);
-                ctabLeft.toggleClass("ctabs-ctab-left-hover", true);
-                ctabRight.toggleClass("ctabs-ctab-right-hover", true);
-                anchor.toggleClass("ctabs-ctab-text-hover", true);
-            }, function() {
-                ctabCenter.toggleClass("ctabs-ctab-center-hover", false);
-                ctabLeft.toggleClass("ctabs-ctab-left-hover", false);
-                ctabRight.toggleClass("ctabs-ctab-right-hover", false);
-                anchor.toggleClass("ctabs-ctab-text-hover", false);
             });
 
             // set the layout data once
@@ -592,6 +578,7 @@
             this.store[hash].ctabLeft.toggleClass("ctabs-ctab-left-active", true);
             this.store[hash].ctabRight.toggleClass("ctabs-ctab-right-active", true);
             this.store[hash].anchor.toggleClass("ctabs-ctab-text-active", true);
+            this.store[hash].close.toggleClass("ctabs-ctab-close-active", true);
             // update values
             this._workflow.currentHash = hash;
             this._updateActive();
@@ -629,6 +616,7 @@
             this.store[hash].ctabLeft.toggleClass("ctabs-ctab-left-active", false);
             this.store[hash].ctabRight.toggleClass("ctabs-ctab-right-active", false);
             this.store[hash].anchor.toggleClass("ctabs-ctab-text-active", false);
+            this.store[hash].close.toggleClass("ctabs-ctab-close-active", false);
             // update values
             this._workflow.currentHash = null;
             this._updateActive();

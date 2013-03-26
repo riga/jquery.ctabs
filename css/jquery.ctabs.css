@@ -105,11 +105,6 @@
   background-position: 0px -50px;
   background-repeat: repeat-x;
 }
-.ctabs-ctab-center-hover {
-  background-image: url(/css/img/tabsprite2.png);
-  background-position: 0px -50px;
-  background-repeat: repeat-x;
-}
 .ctabs-ctab-center-active {
   background-image: url(/css/img/activetabsprite2.png);
   background-position: 0px -50px;
@@ -129,11 +124,6 @@
   right: 0px;
   bottom: 0px;
   left: 0px;
-  background-image: url(/css/img/tabsprite2.png);
-  background-position: 0px 0px;
-  background-repeat: no-repeat;
-}
-.ctabs-ctab-left-hover {
   background-image: url(/css/img/tabsprite2.png);
   background-position: 0px 0px;
   background-repeat: no-repeat;
@@ -161,11 +151,6 @@
   background-position: 0px -25px;
   background-repeat: no-repeat;
 }
-.ctabs-ctab-right-hover {
-  background-image: url(/css/img/tabsprite2.png);
-  background-position: 0px -25px;
-  background-repeat: no-repeat;
-}
 .ctabs-ctab-right-active {
   background-image: url(/css/img/activetabsprite2.png);
   background-position: 0px -25px;
@@ -174,7 +159,7 @@
 .ctabs-ctab-title-wrapper {
   position: absolute;
   top: 0px;
-  right: 20px;
+  right: 15px;
   bottom: 0px;
   left: 0px;
   white-space: nowrap;
@@ -184,24 +169,53 @@
 .ctabs-ctab-anchor {
   text-decoration: none;
   font-family: "Lucida Grande", Helvetica, Arial;
-  font-size: 12px;
+  font-size: 11px;
 }
 .ctabs-ctab-text {
-  color: #d2d2d2;
+  color: #e6e6e6;
   text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.8);
 }
 .ctabs-ctab-text-active {
   color: #323232;
-  font-weight: bold;
   text-shadow: 0px 1px 1px #ffffff;
 }
 .ctabs-ctab-close-wrapper {
   position: absolute;
   top: 0px;
-  right: 0px;
+  right: -5px;
   bottom: 0px;
   left: none;
   width: 20px;
+}
+.ctabs-ctab-close {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-image: url(/css/img/closesprite1.png);
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+}
+.ctabs-ctab-close:hover {
+  background-image: url(/css/img/closesprite1.png);
+  background-position: 0px -25px;
+  background-repeat: no-repeat;
+}
+.ctabs-ctab-close-active {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-image: url(/css/img/activeclosesprite1.png);
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+}
+.ctabs-ctab-close-active:hover {
+  background-image: url(/css/img/activeclosesprite1.png);
+  background-position: 0px -25px;
+  background-repeat: no-repeat;
 }
 .ctabs-head-table {
   display: table;

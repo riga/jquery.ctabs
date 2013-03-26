@@ -14,11 +14,14 @@
 @tabMinWidth: 80px;
 @tabMaxWidth: 180px;
 @overlap: 20px;
-@tabSprite: url(/css/img/tabsprite2.png);
-@tabSpriteActive: url(/css/img/activetabsprite2.png);
-@tabSpriteHover: url(/css/img/tabsprite2.png);
 @headColor: rgba(24, 24, 24, 1.0);
 @bodyColor: rgba(234, 234, 234, 1.0);
+@tabSprite: url(/css/img/tabsprite2.png);
+@tabSpriteActive: url(/css/img/activetabsprite2.png);
+@closeWidth: 20px;
+@closeOffset: -5px;
+@closeSprite: url(/css/img/closesprite1.png);
+@closeSpriteActive: url(/css/img/activeclosesprite1.png);
 @nonePx: none;
 @nonePc: none;
 
@@ -134,9 +137,6 @@
     .ctabs-absolute(@right: @overlap, @left: @overlap);
     .ctabs-background-image(@tabSprite, @position: 0px -(@tabHeight * 2), @repeat: repeat-x);
 }
-.ctabs-ctab-center-hover {
-    .ctabs-background-image(@tabSpriteHover, @position: 0px -(@tabHeight * 2), @repeat: repeat-x);
-}
 .ctabs-ctab-center-active {
     .ctabs-background-image(@tabSpriteActive, @position: 0px -(@tabHeight * 2), @repeat: repeat-x);
 }
@@ -149,9 +149,6 @@
 .ctabs-ctab-left {
     .ctabs-absolute();
     .ctabs-background-image(@tabSprite, @position: 0px 0px);
-}
-.ctabs-ctab-left-hover {
-    .ctabs-background-image(@tabSpriteHover, @position: 0px 0px);
 }
 .ctabs-ctab-left-active {
     .ctabs-background-image(@tabSpriteActive, @position: 0px 0px);
@@ -166,15 +163,12 @@
     .ctabs-absolute();
     .ctabs-background-image(@tabSprite, @position: 0px -@tabHeight);
 }
-.ctabs-ctab-right-hover {
-    .ctabs-background-image(@tabSpriteHover, @position: 0px -@tabHeight);
-}
 .ctabs-ctab-right-active {
     .ctabs-background-image(@tabSpriteActive, @position: 0px -@tabHeight);
 }
 
 .ctabs-ctab-title-wrapper {
-    .ctabs-absolute(@right: 20px);
+    .ctabs-absolute(@right: (@closeWidth + @closeOffset));
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -183,24 +177,38 @@
 .ctabs-ctab-anchor {
     text-decoration: none;
     font-family: "Lucida Grande", Helvetica, Arial;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .ctabs-ctab-text {
-    color: rgba(210, 210, 210, 1.0);
+    color: rgba(230, 230, 230, 1.0);
     text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.8);
 }
 .ctabs-ctab-text-hover {
 }
 .ctabs-ctab-text-active {
     color: rgba(50, 50, 50, 1.0);
-    font-weight: bold;
     text-shadow: 0px 1px 1px rgba(255, 255, 255, 1.0);
 }
 
 .ctabs-ctab-close-wrapper {
-    .ctabs-absolute(@left: @nonePx);
-    width: 20px;
+    .ctabs-absolute(@left: @nonePx, @right: @closeOffset);
+    width: @closeWidth;
+}
+
+.ctabs-ctab-close {
+    .ctabs-absolute();
+    .ctabs-background-image(@closeSprite, @position: 0px 0px);
+}
+.ctabs-ctab-close:hover {
+    .ctabs-background-image(@closeSprite, @position: 0px -25px);
+}
+.ctabs-ctab-close-active {
+    .ctabs-absolute();
+    .ctabs-background-image(@closeSpriteActive, @position: 0px 0px);
+}
+.ctabs-ctab-close-active:hover {
+    .ctabs-background-image(@closeSpriteActive, @position: 0px -25px);
 }
 
 .ctabs-head-table {
