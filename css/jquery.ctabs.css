@@ -14,8 +14,8 @@
   bottom: none;
   left: 0px;
   height: 30px;
+  background-color: #181818;
   overflow: hidden;
-  background-color: lightgrey;
 }
 .ctabs-body {
   position: absolute;
@@ -23,6 +23,7 @@
   right: 0px;
   bottom: 0px;
   left: 0px;
+  background-color: #eaeaea;
   overflow: hidden;
 }
 .ctabs-head-left-wrapper {
@@ -104,6 +105,11 @@
   background-position: 0px -50px;
   background-repeat: repeat-x;
 }
+.ctabs-ctab-center-hover {
+  background-image: url(/css/img/tabsprite2.png);
+  background-position: 0px -50px;
+  background-repeat: repeat-x;
+}
 .ctabs-ctab-center-active {
   background-image: url(/css/img/activetabsprite2.png);
   background-position: 0px -50px;
@@ -123,6 +129,11 @@
   right: 0px;
   bottom: 0px;
   left: 0px;
+  background-image: url(/css/img/tabsprite2.png);
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+}
+.ctabs-ctab-left-hover {
   background-image: url(/css/img/tabsprite2.png);
   background-position: 0px 0px;
   background-repeat: no-repeat;
@@ -150,6 +161,11 @@
   background-position: 0px -25px;
   background-repeat: no-repeat;
 }
+.ctabs-ctab-right-hover {
+  background-image: url(/css/img/tabsprite2.png);
+  background-position: 0px -25px;
+  background-repeat: no-repeat;
+}
 .ctabs-ctab-right-active {
   background-image: url(/css/img/activetabsprite2.png);
   background-position: 0px -25px;
@@ -160,18 +176,24 @@
   top: 0px;
   right: 20px;
   bottom: 0px;
-  left: 16px;
+  left: 0px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.ctabs-ctab-icon-wrapper {
-  position: absolute;
-  top: 0px;
-  right: none;
-  bottom: 0px;
-  left: 0px;
-  width: 16px;
+.ctabs-ctab-anchor {
+  text-decoration: none;
+  font-family: "Lucida Grande", Helvetica, Arial;
+  font-size: 12px;
+}
+.ctabs-ctab-text {
+  color: #d2d2d2;
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.8);
+}
+.ctabs-ctab-text-active {
+  color: #323232;
+  font-weight: bold;
+  text-shadow: 0px 1px 1px #ffffff;
 }
 .ctabs-ctab-close-wrapper {
   position: absolute;

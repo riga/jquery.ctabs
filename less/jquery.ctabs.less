@@ -15,7 +15,10 @@
 @tabMaxWidth: 180px;
 @overlap: 20px;
 @tabSprite: url(/css/img/tabsprite2.png);
-@activeTabSprite: url(/css/img/activetabsprite2.png);
+@tabSpriteActive: url(/css/img/activetabsprite2.png);
+@tabSpriteHover: url(/css/img/tabsprite2.png);
+@headColor: rgba(24, 24, 24, 1.0);
+@bodyColor: rgba(234, 234, 234, 1.0);
 @nonePx: none;
 @nonePc: none;
 
@@ -58,13 +61,13 @@
 .ctabs-head {
     .ctabs-absolute(@bottom: @nonePx);
     height: @headHeight;
+    background-color: @headColor;
     overflow: hidden;
-
-    background-color: lightgrey;
 }
 
 .ctabs-body {
     .ctabs-absolute(@headHeight);
+    background-color: @bodyColor;
     overflow: hidden;
 }
 
@@ -131,8 +134,11 @@
     .ctabs-absolute(@right: @overlap, @left: @overlap);
     .ctabs-background-image(@tabSprite, @position: 0px -(@tabHeight * 2), @repeat: repeat-x);
 }
+.ctabs-ctab-center-hover {
+    .ctabs-background-image(@tabSpriteHover, @position: 0px -(@tabHeight * 2), @repeat: repeat-x);
+}
 .ctabs-ctab-center-active {
-    .ctabs-background-image(@activeTabSprite, @position: 0px -(@tabHeight * 2), @repeat: repeat-x);
+    .ctabs-background-image(@tabSpriteActive, @position: 0px -(@tabHeight * 2), @repeat: repeat-x);
 }
 
 .ctabs-ctab-left-wrapper {
@@ -144,8 +150,11 @@
     .ctabs-absolute();
     .ctabs-background-image(@tabSprite, @position: 0px 0px);
 }
+.ctabs-ctab-left-hover {
+    .ctabs-background-image(@tabSpriteHover, @position: 0px 0px);
+}
 .ctabs-ctab-left-active {
-    .ctabs-background-image(@activeTabSprite, @position: 0px 0px);
+    .ctabs-background-image(@tabSpriteActive, @position: 0px 0px);
 }
 
 .ctabs-ctab-right-wrapper {
@@ -157,20 +166,36 @@
     .ctabs-absolute();
     .ctabs-background-image(@tabSprite, @position: 0px -@tabHeight);
 }
+.ctabs-ctab-right-hover {
+    .ctabs-background-image(@tabSpriteHover, @position: 0px -@tabHeight);
+}
 .ctabs-ctab-right-active {
-    .ctabs-background-image(@activeTabSprite, @position: 0px -@tabHeight);
+    .ctabs-background-image(@tabSpriteActive, @position: 0px -@tabHeight);
 }
 
 .ctabs-ctab-title-wrapper {
-    .ctabs-absolute(@right: 20px, @left: 16px);
+    .ctabs-absolute(@right: 20px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.ctabs-ctab-icon-wrapper {
-    .ctabs-absolute(@right: @nonePx);
-    width: 16px;
+.ctabs-ctab-anchor {
+    text-decoration: none;
+    font-family: "Lucida Grande", Helvetica, Arial;
+    font-size: 12px;
+}
+
+.ctabs-ctab-text {
+    color: rgba(210, 210, 210, 1.0);
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.8);
+}
+.ctabs-ctab-text-hover {
+}
+.ctabs-ctab-text-active {
+    color: rgba(50, 50, 50, 1.0);
+    font-weight: bold;
+    text-shadow: 0px 1px 1px rgba(255, 255, 255, 1.0);
 }
 
 .ctabs-ctab-close-wrapper {

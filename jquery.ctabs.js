@@ -289,17 +289,6 @@
             var ctabCenter = $("<div>")
                 .addClass("ctabs-ctab-center")
                 .appendTo(ctab);
-            // icon
-            var iconBoxWrapper = $("<div>")
-                .addClass("ctabs-ctab-icon-wrapper")
-                .appendTo(ctabCenter);
-            var iconBox = $("<div>")
-                .addClass("ctabs-head-table")
-                .appendTo(iconBoxWrapper);
-            var iconWrapper = $("<div>")
-                .addClass("ctabs-table-cell-left")
-                .append(this.store[hash].icon)
-                .appendTo(iconBox);
             // close
             var closeBoxWrapper = $("<div>")
                 .addClass("ctabs-ctab-close-wrapper")
@@ -316,7 +305,7 @@
                     that.remove(hash);
                 });
             // prepare the anchor
-            var anchor = this.store[hash].anchor;
+            var anchor = this.store[hash].anchor.addClass("ctabs-ctab-anchor ctabs-ctab-text");
             var text = anchor.html();
             anchor
                 .empty()
@@ -336,11 +325,15 @@
                 .addClass("ctabs-table-cell-left")
                 .append(anchor)
                 .appendTo(titleBox);
-            var title = $("<span>")
+            var title = $("<span>").css("padding-left", 1)
                 .html(text)
                 .appendTo(anchor);
             // marker
-            this.store[hash].marker = $("<span>").insertBefore(title);
+            var marker = $("<span>").insertBefore(title);
+            // icon
+            var iconWrapper = $("<span>")
+                .append(this.store[hash].icon)
+                .insertBefore(marker);
 
             // store some nodes
             $.extend(this.store[hash], {
@@ -348,9 +341,26 @@
                 ctabCenter: ctabCenter,
                 ctabLeft: ctabLeft,
                 ctabRight: ctabRight,
-                iconWrapper: iconWrapper,
                 close: close,
-                title: title
+                title: title,
+                marker: marker,
+                iconWrapper: iconWrapper
+            });
+
+            // ctab hover event
+            ctab.hover(function() {
+                if (that._workflow.currentHash == hash) {
+                    return;
+                }
+                ctabCenter.toggleClass("ctabs-ctab-center-hover", true);
+                ctabLeft.toggleClass("ctabs-ctab-left-hover", true);
+                ctabRight.toggleClass("ctabs-ctab-right-hover", true);
+                anchor.toggleClass("ctabs-ctab-text-hover", true);
+            }, function() {
+                ctabCenter.toggleClass("ctabs-ctab-center-hover", false);
+                ctabLeft.toggleClass("ctabs-ctab-left-hover", false);
+                ctabRight.toggleClass("ctabs-ctab-right-hover", false);
+                anchor.toggleClass("ctabs-ctab-text-hover", false);
             });
 
             // set the layout data once
@@ -361,7 +371,6 @@
                     maxTabWidth: parseInt(ctab.css("max-width"))
                 };
             }
-
         },
 
         _resize: function() {
@@ -582,6 +591,7 @@
             this.store[hash].ctabCenter.toggleClass("ctabs-ctab-center-active", true);
             this.store[hash].ctabLeft.toggleClass("ctabs-ctab-left-active", true);
             this.store[hash].ctabRight.toggleClass("ctabs-ctab-right-active", true);
+            this.store[hash].anchor.toggleClass("ctabs-ctab-text-active", true);
             // update values
             this._workflow.currentHash = hash;
             this._updateActive();
@@ -618,6 +628,7 @@
             this.store[hash].ctabCenter.toggleClass("ctabs-ctab-center-active", false);
             this.store[hash].ctabLeft.toggleClass("ctabs-ctab-left-active", false);
             this.store[hash].ctabRight.toggleClass("ctabs-ctab-right-active", false);
+            this.store[hash].anchor.toggleClass("ctabs-ctab-text-active", false);
             // update values
             this._workflow.currentHash = null;
             this._updateActive();
