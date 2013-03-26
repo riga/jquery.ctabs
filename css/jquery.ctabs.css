@@ -89,7 +89,7 @@
   display: inline-block;
 }
 .ctabs-ctab-active {
-  z-index: 1001;
+  z-index: 1100;
 }
 .ctabs-ctab-fix-placeholder {
   position: relative;
