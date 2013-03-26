@@ -11,8 +11,12 @@
 // --- variables ---
 @headHeight: 30px;
 @tabHeight: 25px;
+@tabMinWidth: 80px;
+@tabMaxWidth: 180px;
+@overlap: 20px;
 @nonePx: none;
 @nonePc: none;
+
 
 // --- mixins ---
 .ctabs-absolute (@top: 0px, @right: 0px, @bottom: 0px, @left: 0px) {
@@ -84,7 +88,7 @@
 .ctabs-adder {
     .ctabs-relative(@width: @nonePc);
     display: inline-block;
-    margin-left: 20px;
+    margin-left: @overlap;
 }
 .ctabs-adder:first-child {
     margin-left: 0px;
@@ -92,8 +96,10 @@
 
 .ctabs-ctab {
     .ctabs-relative(@width: @nonePc);
-    margin-right: -20px;
+    margin-right: -@overlap;
     box-shadow: inset 0px 0px 1px black;
+    min-width: @tabMinWidth;
+    max-width: @tabMaxWidth;
 }
 .ctabs-ctab-flex {
     box-flex: 1;
@@ -102,11 +108,6 @@
 }
 .ctabs-ctab-fix {
     display: inline-block;
-}
-
-.ctabs-ctab-dimensions {
-    min-width: 80px;
-    max-width: 180px;
 }
 
 .ctabs-ctab-active {
@@ -120,19 +121,19 @@
 }
 
 .ctabs-ctab-center {
-    .ctabs-absolute(@right: 20px, @left: 20px);
+    .ctabs-absolute(@right: @overlap, @left: @overlap);
 }
 
 .ctabs-ctab-left-wrapper {
     .ctabs-absolute(@right: @nonePx);
-    width: 20px;
+    width: @overlap;
 
     background-color: red;
 }
 
 .ctabs-ctab-right-wrapper {
     .ctabs-absolute(@left: @nonePx);
-    width: 20px;
+    width: @overlap;
 
     background-color: green;
 }

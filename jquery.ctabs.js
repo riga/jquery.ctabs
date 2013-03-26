@@ -35,16 +35,10 @@
             width: "100%"
         },
 
-        _settings: {
-            overlap: 20,
-            resizeCacheDelay: 500
-        },
+        _layout: null,
 
         _workflow: {
-            currentHash: null,
-            resizeTimeout: null,
-            minTabWidth: null,
-            maxTabWidth: null
+            currentHash: null
         },
 
         // --- widget methods ---
@@ -223,7 +217,7 @@
             var sortableOptions = this.options.cssFlex ? {} : {
                 placeholder: "ctabs-ctab-fix-placeholder",
                 start: function(event, ui) {
-                    ui.placeholder.css("width", ui.item.width() - that._settings.overlap);
+                    ui.placeholder.css("width", ui.item.width() - that._layout.overlap);
                 }
             };
             $(headCenter).sortable($.extend({
@@ -269,7 +263,7 @@
 
             // ctab
             var ctab = $("<div>")
-                .addClass("ctabs-ctab ctabs-ctab-dimensions")
+                .addClass("ctabs-ctab")
                 .addClass(this.options.cssFlex ? "ctabs-ctab-flex" : "ctabs-ctab-fix")
                 .attr("hash", hash)
                 .insertBefore(this._nodes.adder)
@@ -355,6 +349,16 @@
                 close: close,
                 title: title
             });
+
+            // set the layout data once
+            if (!this._layout) {
+                this._layout = {
+                    overlap: -1 * parseInt(ctab.css("margin-right")),
+                    minTabWidth: parseInt(ctab.css("min-width")),
+                    maxTabWidth: parseInt(ctab.css("max-width"))
+                };
+            }
+
         },
 
         _resize: function() {
@@ -363,42 +367,33 @@
                 return;
             }
             // calculate layout values
-            var wf              = this._workflow;
+            var layout          = this._layout;
             var children        = this._nodes.headCenter.children(".ctabs-ctab");
             var firstChild      = children.first();
             var nChildren       = parseFloat(children.size());
-            wf.minTabWidth      = wf.minTabWidth || parseInt(firstChild.css('min-width'));
-            wf.maxTabWidth      = wf.maxTabWidth || parseInt(firstChild.css('max-width'));
             var currentTabWidth = firstChild.width();
             var outerWidth      = this._nodes.headCenter.width();
             var adderWidth      = this._nodes.adder.width();
-            var innerWidth      = adderWidth + nChildren * currentTabWidth - (nChildren - 1) * this._settings.overlap;
-            var maxInnerWidth   = adderWidth + nChildren * wf.maxTabWidth - (nChildren - 1) * this._settings.overlap;
-            var minInnerWidth   = adderWidth + nChildren * wf.minTabWidth - (nChildren - 1) * this._settings.overlap;
+            var innerWidth      = adderWidth + nChildren * currentTabWidth - (nChildren - 1) * layout.overlap;
+            var maxInnerWidth   = adderWidth + nChildren * layout.maxTabWidth - (nChildren - 1) * layout.overlap;
+            var minInnerWidth   = adderWidth + nChildren * layout.minTabWidth - (nChildren - 1) * layout.overlap;
             var targetWidth     = currentTabWidth;
 
             // determine the new width of the ctabs
             if (outerWidth >= maxInnerWidth) {
                 // the element is big enough, no need to shrink, use the maximum width
-                targetWidth = wf.maxTabWidth;
+                targetWidth = layout.maxTabWidth;
             } else if (outerWidth <= minInnerWidth) {
                 // the element is too small, all ctabs are their minimum, use the minimum width
-                targetWidth = wf.minTabWidth;
+                targetWidth = layout.minTabWidth;
             } else {
                 // the ctab widths need to be scaled, revert the inner width calculation to obtain the new ctab width
-                targetWidth = (outerWidth - adderWidth + (nChildren - 1) * this._settings.overlap) / nChildren;
+                targetWidth = (outerWidth - adderWidth + (nChildren - 1) * layout.overlap) / nChildren;
             }
             // only apply the new width, when it differs from the old one
             if (targetWidth != currentTabWidth) {
                 children.width(targetWidth);
             }
-            // try to clear chached variables after a delay
-            window.clearTimeout(wf.resizeTimeout);
-            wf.resizeTimeout = window.setTimeout(function() {
-                wf.minTabWidth = null;
-                wf.maxTabWidth = null;
-
-            }, this._settings.resizeCacheDelay);
         },
 
         _stopSort: function() {
