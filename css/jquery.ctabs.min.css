@@ -10,7 +10,7 @@
 .ctabs-body{position:absolute;top:30px;right:0;bottom:0;left:0;background-color:#eaeaea;overflow:hidden}.ctabs-head-left-wrapper{position:absolute;top:0;right:none;bottom:0;left:0}
 .ctabs-head-right-wrapper{position:absolute;top:0;right:0;bottom:0;left:none}.ctabs-head-center-wrapper{position:absolute;top:none;right:none;bottom:0;left:none;height:25px}
 .ctabs-head-center{position:relative;height:100%;width:100%;overflow:hidden}.ctabs-head-center-flex{display:box;display:-webkit-box;display:-moz-box}.ctabs-head-center-fix{white-space:nowrap}
-.ctabs-adder{position:relative;height:100%;width:none;display:inline-block;margin-left:20px}.ctabs-adder:first-child{margin-left:0}.ctabs-ctab{position:relative;height:100%;width:none;margin-right:-20px;min-width:80px;max-width:180px}
+.ctabs-adder{position:relative;height:100%;width:none;display:inline-block;margin-left:5px}.ctabs-adder:first-child{margin-left:0}.ctabs-ctab{position:relative;height:100%;width:none;margin-right:0;min-width:80px;max-width:180px}
 .ctabs-ctab-flex{box-flex:1;-webkit-box-flex:1;-moz-box-flex:1}.ctabs-ctab-fix{display:inline-block}.ctabs-ctab-active{z-index:1100}.ctabs-ctab-fix-placeholder{position:relative;display:inline-block}
 .ctabs-ctab-center{position:absolute;top:0;right:20px;bottom:0;left:20px;background-image:url(/css/img/tabsprite2.png);background-position:0 -50px;background-repeat:repeat-x}
 .ctabs-ctab-center-active{background-image:url(/css/img/activetabsprite2.png);background-position:0 -50px;background-repeat:repeat-x}.ctabs-ctab-left-wrapper{position:absolute;top:0;right:none;bottom:0;left:0;width:20px}

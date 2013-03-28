@@ -13,7 +13,8 @@
 @tabHeight: 25px;
 @tabMinWidth: 80px;
 @tabMaxWidth: 180px;
-@overlap: 20px;
+@tabEdgeWidth: 20px;
+@overlap: 0px;
 @headColor: rgba(24, 24, 24, 1.0);
 @bodyColor: rgba(234, 234, 234, 1.0);
 @tabSprite: url(/css/img/tabsprite2.png);
@@ -103,7 +104,7 @@
 .ctabs-adder {
     .ctabs-relative(@width: @nonePc);
     display: inline-block;
-    margin-left: @overlap;
+    margin-left: (@overlap + 5);
 }
 .ctabs-adder:first-child {
     margin-left: 0px;
@@ -134,7 +135,7 @@
 }
 
 .ctabs-ctab-center {
-    .ctabs-absolute(@right: @overlap, @left: @overlap);
+    .ctabs-absolute(@right: @tabEdgeWidth, @left: @tabEdgeWidth);
     .ctabs-background-image(@tabSprite, @position: 0px -(@tabHeight * 2), @repeat: repeat-x);
 }
 .ctabs-ctab-center-active {
@@ -143,7 +144,7 @@
 
 .ctabs-ctab-left-wrapper {
     .ctabs-absolute(@right: @nonePx);
-    width: @overlap;
+    width: @tabEdgeWidth;
 }
 
 .ctabs-ctab-left {
@@ -156,7 +157,7 @@
 
 .ctabs-ctab-right-wrapper {
     .ctabs-absolute(@left: @nonePx);
-    width: @overlap;
+    width: @tabEdgeWidth;
 }
 
 .ctabs-ctab-right {
