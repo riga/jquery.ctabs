@@ -67,7 +67,7 @@
   height: 100%;
   width: none;
   display: inline-block;
-  margin-left: 5px;
+  margin-left: 25px;
 }
 .ctabs-adder:first-child {
   margin-left: 0px;
@@ -76,7 +76,7 @@
   position: relative;
   height: 100%;
   width: none;
-  margin-right: 0px;
+  margin-right: -20px;
   min-width: 80px;
   max-width: 180px;
 }
